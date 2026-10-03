@@ -1,0 +1,42 @@
+{
+ "claude": {
+  "calls": 219,
+  "in": 74260,
+  "out": 64844,
+  "reasoning": 25919,
+  "latency": 1429.6322939395905,
+  "cached": 180
+ },
+ "gpt": {
+  "calls": 218,
+  "in": 42458,
+  "out": 28687,
+  "reasoning": 12542,
+  "latency": 1108.059365272522,
+  "cached": 179
+ },
+ "gemini": {
+  "calls": 218,
+  "in": 44638,
+  "out": 247639,
+  "reasoning": 224372,
+  "latency": 2193.946861743927,
+  "cached": 179
+ },
+ "grok": {
+  "calls": 220,
+  "in": 315038,
+  "out": 15540,
+  "reasoning": 342046,
+  "latency": 4956.40510392189,
+  "cached": 181
+ },
+ "world": {
+  "calls": 12,
+  "in": 6696,
+  "out": 11148,
+  "reasoning": 10367,
+  "latency": 44.20858097076416,
+  "cached": 12
+ }
+}

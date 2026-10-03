@@ -1,0 +1,12 @@
+{
+ "contestants": {
+  "claude": "claude-fable-5-1",
+  "gpt": "gpt-6.1-sol",
+  "gemini": "gemini-3.1-pro-preview",
+  "grok": "grok-4.7"
+ },
+ "world_model": [
+  "gemini",
+  "gemini-3.8-flash"
+ ]
+}
