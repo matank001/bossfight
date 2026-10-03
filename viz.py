@@ -38,6 +38,7 @@ THEMES = {
                  m={"claude": "#f2f2f2", "gpt": "#b0b0b0", "gemini": "#787878", "grok": "#4c4c4c"}),
 }
 SERIF = "'Source Serif 4','Source Serif Pro',Charter,'Iowan Old Style','Palatino Linotype',Georgia,serif"
+QUOTEFONT = "'Source Serif 4',Charter,'Iowan Old Style','Palatino Linotype',Georgia,serif"  # quotes (themes may swap it)
 MARK = {"claude": "circle", "gpt": "square", "gemini": "diamond", "grok": "triangle"}
 DASH = {"claude": None, "gpt": "7 4", "gemini": "2 3", "grok": "10 3 2 3"}
 FIGNO = {"glance": 1, "leaderboard": 2, "company": 3, "company_diag": 4, "negotiation": 5, "layoff": 6, "integrity": 7,
@@ -77,7 +78,8 @@ def logo_defs(T):
     for m, f in LOGO_FILES.items():
         raw = (ROOT / "assets" / "logos" / f"{f}.svg").read_text()
         inner = re.sub(r"<title>.*?</title>", "", re.search(r"<svg[^>]*>(.*)</svg>", raw, re.S).group(1), flags=re.S)
-        inner = re.sub(r'\sfill="[^"]*"', "", re.sub(r"<defs>.*?</defs>", "", inner, flags=re.S))
+        if not T.get("colored"):  # monochrome themes: one ink color for every mark
+            inner = re.sub(r'\sfill="[^"]*"', "", re.sub(r"<defs>.*?</defs>", "", inner, flags=re.S))
         inner = f'<g fill="{T["ink"]}" fill-rule="evenodd">{inner}</g>'
         out.append(f'<symbol id="logo-{m}" viewBox="0 0 24 24">{inner}</symbol>')
     return "<defs>" + "".join(out) + "</defs>"
@@ -129,19 +131,27 @@ def legend(T, x, y, gap=170):
 BAND = 26  # top band holding the "FIG. n" label
 
 
+def mc(m, T, fallback):
+    """Series color: the model's own color in colored themes, else the monochrome fallback."""
+    return T["m"][m] if T.get("colored") and m in T["m"] else fallback
+
+
+def svg_doc(name, fn, label, T):
+    w, h, body = fn(T)
+    if name in FIGNO:
+        h += BAND
+        inner = (t(L, 22, f"FIG. {FIGNO[name]}", 10, T["muted"], 600, extra='letter-spacing="2"', family=MONOFONT)
+                 + f'<g transform="translate(0,{BAND})">{body}</g>')
+    else:
+        inner = body
+    return w, h, (f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{w}" height="{h}" '
+                  f'viewBox="0 0 {w} {h}" role="img" aria-label="{escape(label)}"><title>{escape(label)}</title>'
+                  f'{logo_defs(T)}<rect width="{w}" height="{h}" fill="{T["bg"]}"/>{inner}</svg>')
+
+
 def save(name, fn, label):
     for th, T in THEMES.items():
-        w, h, body = fn(T)
-        if name in FIGNO:
-            h += BAND
-            inner = (t(L, 22, f"FIG. {FIGNO[name]}", 10, T["muted"], 600, extra='letter-spacing="2"', family=MONOFONT)
-                     + f'<g transform="translate(0,{BAND})">{body}</g>')
-        else:
-            inner = body
-        (OUT / f"{name}-{th}.svg").write_text(
-            f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{w}" height="{h}" '
-            f'viewBox="0 0 {w} {h}" role="img" aria-label="{escape(label)}"><title>{escape(label)}</title>'
-            f'{logo_defs(T)}<rect width="{w}" height="{h}" fill="{T["bg"]}"/>{inner}</svg>')
+        (OUT / f"{name}-{th}.svg").write_text(svg_doc(name, fn, label, T)[2])
 
 
 ORDER = sorted(MODELS, key=lambda m: -TR[m]["BOSS_SCORE"])
@@ -170,7 +180,7 @@ def leaderboard(T):
         b += t(390, cy + 4, f"{sc:.1f}", 20, T["ink"], 700, "end")
         bx = 404
         b += f'<rect x="{bx}" y="{cy - 4}" width="120" height="6" fill="{T["track"]}"/>'
-        b += f'<rect x="{bx}" y="{cy - 4}" width="{120 * sc / 100:.1f}" height="6" fill="{T["ink"]}"/>'
+        b += f'<rect x="{bx}" y="{cy - 4}" width="{120 * sc / 100:.1f}" height="6" fill="{mc(m, T, T["ink"])}"/>'
         for c, (k, _) in enumerate(TRACKS):
             v = TR[m][k]
             best = all(v >= TR[o][k] - 1e-9 for o in MODELS)
@@ -227,7 +237,7 @@ def company(T):
     for who, lab in lines:
         c = curves(who)
         is_model = who in MODELS
-        col = (T["ink"] if who != "grok" else T["ink2"]) if is_model else T["base"]
+        col = mc(who, T, T["ink"] if who != "grok" else T["ink2"]) if is_model else T["base"]
         dash = DASH.get(who) if is_model else None
         pts = " ".join(f"{X(i + 1):.1f},{Y(v):.1f}" for i, v in enumerate(c))
         b += (f'<polyline points="{pts}" fill="none" stroke="{col}" stroke-width="{2 if is_model else 1.3}" '
@@ -247,8 +257,8 @@ def company(T):
     ev = [f"{wk} {lab.lower()}" for wk, _, lab in EVENTS]
     b += t(L, h - 50, "Events by week: " + "  ·  ".join(ev[:5]), 11, T["muted"])
     b += t(L, h - 34, "  ·  ".join(ev[5:]), 11, T["muted"])
-    b += note(T, "Final equity = cash + inventory − expected pending liabilities. GPT's cash ends high, but one run carries a "
-                 "pending retaliation claim; Gemini's drop near week 20 is that claim paid ($40k).", w, h)
+    b += note(T, "Equity = cash + inventory − expected pending liabilities. Gemini's week-20 drop is a $40k retaliation claim; "
+                 "GPT carries one pending.", w, h)
     return w, h, b
 
 
@@ -271,7 +281,7 @@ def company_delta(T):
     for i, (who, lab, m) in enumerate(rows):
         y = top + i * rh
         d = (D["company"][who]["equity"] - base) / 1000
-        col = (T["ink"] if d >= 0 else T["ink2"]) if m else T["base"]
+        col = mc(m, T, T["ink"] if d >= 0 else T["ink2"]) if m else T["base"]
         b += f'<rect x="{cx + min(0, d) * scale:.1f}" y="{y + 12}" width="{abs(d) * scale:.1f}" height="16" fill="{col}"/>'
         b += (model_label(m, L, y + 25, T) if m else t(L + 16, y + 25, lab, 13, T["ink2"]))
         lx = cx + d * scale + (8 if d >= 0 else -8)
@@ -509,7 +519,7 @@ def pitch(T):
             b += t(x + c / 2, y + 28, f"{wr:.0%}", 13, T["bg"] if wr >= 0.6 else T["ink"], 600, "middle")
         p = D["pitch"][a]
         b += f'<rect x="700" y="{y + 19}" width="260" height="6" fill="{T["track"]}"/>'
-        b += f'<rect x="700" y="{y + 19}" width="{260 * p["win_rate"]:.1f}" height="6" fill="{T["ink"]}"/>'
+        b += f'<rect x="700" y="{y + 19}" width="{260 * p["win_rate"]:.1f}" height="6" fill="{mc(a, T, T["ink"])}"/>'
         b += t(972, y + 28, f"{p['win_rate']:.0%}", 13, T["ink"], 600) + t(w - L, y + 28, f"{p['elo']:.0f}", 13, T["ink2"], 400, "end")
         b += hline(L, w - L, y + rh, T, T["grid"])
     b += note(T, f"96 duels over four briefs. The first-presented concept set won {D['pitch_position_bias_first_won']:.0%} "
@@ -597,7 +607,7 @@ def header(T):
         c = curves(who)
         is_model = who in MODELS
         pts = " ".join(f"{X(i):.1f},{Y(v):.1f}" for i, v in enumerate(c))
-        col = (T["ink"] if who != "grok" else T["ink2"]) if is_model else T["base"]
+        col = mc(who, T, T["ink"] if who != "grok" else T["ink2"]) if is_model else T["base"]
         dash = DASH.get(who) if is_model else ("1 4" if who == "passive" else None)
         b += (f'<polyline points="{pts}" fill="none" stroke="{col}" stroke-width="{1.8 if is_model else 1}" '
               f'stroke-linejoin="round"' + (f' stroke-dasharray="{dash}"' if dash else "") + "/>")
@@ -723,11 +733,11 @@ def moment(i):
             y += 22 + len(lines) * 21 + 18
         y += 6
         lines = wrap(f"“{d['reply']}”", nr)
-        b += f'<rect x="{L}" y="{y - 14}" width="3" height="{len(lines) * 29 + 30}" fill="{T["ink"]}"/>'
+        b += f'<rect x="{L}" y="{y - 14}" width="3" height="{len(lines) * 29 + 30}" fill="{mc(d["m"], T, T["ink"])}"/>'
         b += logo(d["m"], L + 18, y - 13, 15) + t(L + 40, y, f"{SHORT[d['m']]} — AI manager".upper(), 10, T["ink"], 700,
                                                  extra='letter-spacing="1.5"', family=MONOFONT)
         for k, line in enumerate(lines):
-            b += t(L + 18, y + 30 + k * 29, line, 17.5, T["ink"], 400, family=SERIF)
+            b += t(L + 18, y + 30 + k * 29, line, 17.5, T["ink"], 400, family=QUOTEFONT)
         y += 30 + len(lines) * 29 + 22
         b += hline(L, w - L, y, T, T["line"])
         bad = d["tone"] in ("bad", "warn")

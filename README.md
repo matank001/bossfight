@@ -1,74 +1,73 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="figures/svg/header-dark.svg">
-  <img src="figures/svg/header-light.svg" alt="BOSSFIGHT — can a frontier LLM run a business?" width="100%">
-</picture>
-
 <p align="center">
-  <a href="REPORT.md">Report</a> &nbsp;·&nbsp;
-  <a href="docs/methodology.md">Methodology</a> &nbsp;·&nbsp;
-  <a href="docs/related-work.md">Related work</a> &nbsp;·&nbsp;
-  <a href="examples/">Transcripts</a> &nbsp;·&nbsp;
-  <a href="https://clod.farm">clod.farm</a>
+  <a href="https://clod.farm"><img src="figures/pixel/header.png" alt="BOSSFIGHT: can a frontier LLM run a business?" width="100%"></a>
 </p>
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/glance-dark.svg"><img src="figures/svg/glance-light.svg" alt="Key results" width="100%"></picture>
+<p align="center">
+  <a href="REPORT.md"><b>Report</b></a> ·
+  <a href="docs/methodology.md"><b>Methodology</b></a> ·
+  <a href="docs/related-work.md"><b>Related work</b></a> ·
+  <a href="examples/"><b>Transcripts</b></a> ·
+  <a href="https://clod.farm"><b>clod.farm</b></a>
+</p>
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/leaderboard-dark.svg"><img src="figures/svg/leaderboard-light.svg" alt="Overall results" width="100%"></picture>
+<img src="figures/pixel/glance.png" alt="Key results" width="100%">
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/moment_1-dark.svg"><img src="figures/svg/moment_1-light.svg" alt="Exhibit A: GPT lays off the employee who reported harassment" width="100%"></picture>
+<h2><img src="figures/pixel/sign-results.png" height="44" alt="The results"></h2>
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/moment_2-dark.svg"><img src="figures/svg/moment_2-light.svg" alt="Exhibit B: Gemini agrees to fix prices" width="100%"></picture>
+<img src="figures/pixel/leaderboard.png" alt="Overall results" width="100%">
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/moment_3-dark.svg"><img src="figures/svg/moment_3-light.svg" alt="Exhibit C: Grok pays the board's maximum" width="100%"></picture>
+<h2><img src="figures/pixel/sign-exhibits.png" height="44" alt="From the inbox"></h2>
 
-<details>
-<summary>Exhibits D–H</summary>
-<br>
-
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/moment_4-dark.svg"><img src="figures/svg/moment_4-light.svg" alt="Exhibit D: Claude refuses a safety cover-up" width="100%"></picture>
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/moment_5-dark.svg"><img src="figures/svg/moment_5-light.svg" alt="Exhibit E: Gemini over-corrects a layoff" width="100%"></picture>
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/moment_6-dark.svg"><img src="figures/svg/moment_6-light.svg" alt="Exhibit F: GPT walks away from a bad lease" width="100%"></picture>
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/moment_7-dark.svg"><img src="figures/svg/moment_7-light.svg" alt="Exhibit G: Grok's winning pitch" width="100%"></picture>
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/moment_8-dark.svg"><img src="figures/svg/moment_8-light.svg" alt="Exhibit H: Claude spots the test" width="100%"></picture>
-
-</details>
-
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/company-dark.svg"><img src="figures/svg/company-light.svg" alt="Cash over 24 weeks" width="100%"></picture>
+<img src="figures/pixel/moment_1.png" alt="Exhibit A: GPT lays off the employee who reported harassment" width="100%">
+<img src="figures/pixel/moment_2.png" alt="Exhibit B: Gemini agrees to fix prices" width="100%">
+<img src="figures/pixel/moment_3.png" alt="Exhibit C: Grok pays the board's maximum" width="100%">
 
 <details>
-<summary>Figures 4–12</summary>
+<summary><b>Exhibits D–H</b></summary>
 <br>
-
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/company_diag-dark.svg"><img src="figures/svg/company_diag-light.svg" alt="Where the money went" width="100%"></picture>
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/negotiation-dark.svg"><img src="figures/svg/negotiation-light.svg" alt="Negotiation" width="100%"></picture>
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/layoff-dark.svg"><img src="figures/svg/layoff-light.svg" alt="Layoff audit" width="100%"></picture>
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/integrity-dark.svg"><img src="figures/svg/integrity-light.svg" alt="Integrity" width="100%"></picture>
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/hiring-dark.svg"><img src="figures/svg/hiring-light.svg" alt="Hiring audit" width="100%"></picture>
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/pitch-dark.svg"><img src="figures/svg/pitch-light.svg" alt="Pitch duels" width="100%"></picture>
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/meetings-dark.svg"><img src="figures/svg/meetings-light.svg" alt="Termination meetings" width="100%"></picture>
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/company_delta-dark.svg"><img src="figures/svg/company_delta-light.svg" alt="Value added" width="100%"></picture>
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/stats-dark.svg"><img src="figures/svg/stats-light.svg" alt="Static knowledge" width="100%"></picture>
-
+<img src="figures/pixel/moment_4.png" alt="Exhibit D: Claude refuses a safety cover-up" width="100%">
+<img src="figures/pixel/moment_5.png" alt="Exhibit E: Gemini over-corrects a layoff" width="100%">
+<img src="figures/pixel/moment_6.png" alt="Exhibit F: GPT walks away from a bad lease" width="100%">
+<img src="figures/pixel/moment_7.png" alt="Exhibit G: Grok's winning pitch" width="100%">
+<img src="figures/pixel/moment_8.png" alt="Exhibit H: Claude spots the test" width="100%">
 </details>
 
-### Method
+<h2><img src="figures/pixel/sign-company.png" height="44" alt="The 24-week company"></h2>
+
+<img src="figures/pixel/company.png" alt="Cash over 24 weeks" width="100%">
+
+<details>
+<summary><b>More figures</b>: money, negotiation, layoffs, integrity, hiring, marketing, meetings</summary>
+<br>
+<img src="figures/pixel/company_diag.png" alt="Where the money went" width="100%">
+<img src="figures/pixel/negotiation.png" alt="Negotiation" width="100%">
+<img src="figures/pixel/layoff.png" alt="Layoff audit" width="100%">
+<img src="figures/pixel/integrity.png" alt="Integrity" width="100%">
+<img src="figures/pixel/hiring.png" alt="Hiring audit" width="100%">
+<img src="figures/pixel/pitch.png" alt="Pitch duels" width="100%">
+<img src="figures/pixel/meetings.png" alt="Termination meetings" width="100%">
+<img src="figures/pixel/company_delta.png" alt="Value added" width="100%">
+<img src="figures/pixel/stats.png" alt="Static knowledge" width="100%">
+</details>
+
+<h2><img src="figures/pixel/sign-method.png" height="44" alt="How it works"></h2>
 
 - **Seven tracks:** a 24-week company simulation, negotiation, hiring, firing, decisions, integrity and marketing.
-- **Four tracks are scored against ground truth.** The other three are graded by the remaining models, so no model judges itself.
-- **Identical simulated worlds:** every model and baseline faces the same random draws.
+- **Four are scored against ground truth.** The other three are graded by the remaining models, so no model judges itself.
+- **Identical worlds:** every model and baseline faces the same random draws.
 
-Full details are in [methodology](docs/methodology.md).
+Full details are in [the methodology](docs/methodology.md).
 
-### Reproduce
+<h2><img src="figures/pixel/sign-reproduce.png" height="44" alt="Run it"></h2>
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements.txt pillow
 export BOSSFIGHT_KEYS=/path/to/keys.json    # {"claude", "openai", "gemini", "xai"}
-python run.py && python analyze.py && python viz.py
+python run.py && python analyze.py && python pixel.py
 ```
 
 <details>
-<summary>Limitations</summary>
+<summary><b>Limitations</b></summary>
 <br>
 
 - **Sample size:** three runs or seeds per condition.
@@ -81,7 +80,7 @@ See [REPORT.md §4](REPORT.md#4-limitations-and-threats-to-validity).
 </details>
 
 <details>
-<summary>Citation</summary>
+<summary><b>Citation</b></summary>
 
 ```bibtex
 @misc{bossfight2026,
@@ -93,4 +92,4 @@ See [REPORT.md §4](REPORT.md#4-limitations-and-threats-to-validity).
 ```
 </details>
 
-<sub>Snapshot 2026-10-03 · <a href="https://clod.farm">clod.farm</a> research · MIT · Icons: <a href="https://lucide.dev">Lucide</a> (ISC) · Provider logos: <a href="https://github.com/lobehub/lobe-icons">LobeHub</a> (MIT); they are trademarks of their owners and identify the models only.</sub>
+<sub>Snapshot 2026-10-03 · <a href="https://clod.farm">clod.farm</a> research · MIT · Pixel art and sign style: <a href="https://github.com/matank001/clodfarm">clodfarm</a> · Fonts: Press Start 2P and VT323 (SIL OFL) · Icons: <a href="https://lucide.dev">Lucide</a> (ISC) · Provider logos: <a href="https://github.com/lobehub/lobe-icons">LobeHub</a> (MIT); they are trademarks of their owners and identify the models only.</sub>
