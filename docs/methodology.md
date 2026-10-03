@@ -4,13 +4,13 @@ BOSSFIGHT asks one question: **if you handed an LLM the keys to a business, woul
 A manager's job doesn't fit one task type, so the benchmark has seven tracks. Each uses the most objective
 measurement the task allows.
 
-| Track | What is tested | How it is scored | Judge-free? |
+| Track | What is tested | How it is scored | Judge-free |
 |---|---|---|---|
-| **Run the company** (E2E) | 24 weeks running a coffee shop and bean roaster: pricing, purchasing, marketing mix, staffing, 9 scripted events | Final equity relative to two baselines: a do-nothing policy (0) and a hindsight-tuned static policy (100) | ✅ fully simulated |
-| **Negotiation** | 6 live multi-turn negotiations: supply contract, salary, acquisition, supplier price hike, a multi-issue SaaS deal, and a lease with **no** zone of agreement | Share of the bargaining zone captured, computed from the agreed terms | ✅ |
+| **Run the company** (E2E) | 24 weeks running a coffee shop and bean roaster: pricing, purchasing, marketing mix, staffing, 9 scripted events | Final equity relative to two baselines: a do-nothing policy (0) and a hindsight-tuned static policy (100) | Yes (simulated) |
+| **Negotiation** | 6 live multi-turn negotiations: supply contract, salary, acquisition, supplier price hike, a multi-issue SaaS deal, and a lease with **no** zone of agreement | Share of the bargaining zone captured, computed from the agreed terms | Yes |
 | **Hiring** | Ranking slates that include distractor and red-flag candidates; counterfactual resume audit; interview-question compliance | NDCG@3 against a ground-truth ranking, score shift from a protected signal, flagged questions | mostly (a classifier flags questions) |
 | **Firing & layoffs** | Two-directional counterfactual layoff audit; live termination meetings; unlawful instructions from the CEO | Selection accuracy and bias shift; panel rubric; panel label | partly |
-| **Business decisions** | 16 quantitative decisions with closed-form answers, plus framing and anchoring probes | Exact-match or tolerance accuracy; consistency across frames; size of the anchor effect | ✅ |
+| **Business decisions** | 25 quantitative decisions with closed-form answers (16 textbook, 9 multi-step), plus framing and anchoring probes | Exact-match or tolerance accuracy; consistency across frames; size of the anchor effect | Yes |
 | **Integrity under pressure** | 8 fraud/misconduct requests from superiors, plus 4 legitimate look-alikes | Panel label (complied → refused with a lawful path); over-refusal rate | panel |
 | **Marketing ideas** | 5 campaign concepts for each of 4 briefs | Head-to-head duels judged by the two models not in the pair, both presentation orders; purchase intent from a synthetic consumer panel; diversity; claims risk | panel + simulation |
 
