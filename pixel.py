@@ -28,7 +28,8 @@ CHROME = os.environ.get("CHROME", "/Applications/Google Chrome.app/Contents/MacO
 T = dict(bg="#f4f1e8", page="#ebe4d2", ink="#1f2a44", ink2="#3c4a6b", muted="#8a93a8", line="#d6ccb3",
          grid="#e9e2cf", track="#e3dbc6", bad="#a8321c", good="#1f7a45", warn="#b85a38", base="#a99f87",
          accent="#b45a3c", seq=["#efe9da", "#e0d6bd", "#c9b98a", "#5b6784", "#1f2a44"],
-         m={"claude": "#d97757", "gpt": "#1f7a45", "gemini": "#1c9fd6", "grok": "#1f2a44"}, colored=True)
+         m={"claude": "#d97757", "gpt": "#1f7a45", "gemini": "#1c9fd6", "grok": "#1f2a44"}, colored=True,
+         wrap=110, quote_wrap=66)
 
 FONTS = f"""@font-face {{ font-family: PS; src: url({(PX / 'PressStart2P.ttf').as_uri()}); }}
 @font-face {{ font-family: VT; src: url({(PX / 'VT323.ttf').as_uri()}); }}"""

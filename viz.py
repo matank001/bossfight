@@ -719,7 +719,7 @@ def moment(i):
     d = MOMENTS[i]
 
     def fn(T):
-        w, n, nr = 1100, 120, 92
+        w, n, nr = 1100, T.get("wrap", 120), T.get("quote_wrap", 92)
         b = t(L, 30, f"EXHIBIT {'ABCDEFGH'[i]}", 10.5, T["ink"], 700, extra='letter-spacing="2.5"', family=MONOFONT)
         b += t(L + 116, 30, d["track"], 10.5, T["muted"], 500, extra='letter-spacing="1.5"', family=MONOFONT)
         b += t(L, 64, d["subject"], 21, T["ink"], 500, family=SERIF)
