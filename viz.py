@@ -63,12 +63,32 @@ def vline(x, y1, y2, T, color=None, w=1, dash=None):
             + (f' stroke-dasharray="{dash}"' if dash else "") + "/>")
 
 
+LOGO_FILES = {"claude": "claude-color", "gpt": "openai", "gemini": "gemini-color", "grok": "grok"}
+MONO_LOGOS = {"gpt", "grok"}  # single-color marks: drawn in the theme's ink color
+
+
+def logo_defs(T):
+    out = []
+    for m, f in LOGO_FILES.items():
+        raw = (ROOT / "assets" / "logos" / f"{f}.svg").read_text()
+        inner = re.sub(r"<title>.*?</title>", "", re.search(r"<svg[^>]*>(.*)</svg>", raw, re.S).group(1), flags=re.S)
+        if m in MONO_LOGOS:
+            inner = f'<g fill="{T["ink"]}" fill-rule="evenodd">{inner}</g>'
+        out.append(f'<symbol id="logo-{m}" viewBox="0 0 24 24">{inner}</symbol>')
+    return "<defs>" + "".join(out) + "</defs>"
+
+
+def logo(m, x, y, size=16):
+    return (f'<use href="#logo-{m}" xlink:href="#logo-{m}" x="{x:.1f}" y="{y:.1f}" '
+            f'width="{size}" height="{size}"/>')
+
+
 def dot(m, x, y, T, r=5):
     return f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{r}" fill="{T["m"][m]}"/>'
 
 
 def model_label(m, x, y, T, size=13, weight=600):
-    return dot(m, x + 5, y - 4.5, T) + t(x + 16, y, SHORT[m], size, T["ink"], weight)
+    return logo(m, x, y - size + 1, size + 3) + t(x + size + 9, y, SHORT[m], size, T["ink"], weight)
 
 
 def title(T, head, sub, w):
@@ -79,16 +99,18 @@ def note(T, text, w, h):
     return t(L, h - 14, text, 11.5, T["muted"])
 
 
-def legend(T, x, y, gap=150):
-    return "".join(dot(m, x + i * gap + 5, y - 4, T) + t(x + i * gap + 16, y, SHORT[m], 12, T["ink2"]) for i, m in enumerate(MODELS))
+def legend(T, x, y, gap=170):
+    return "".join(dot(m, x + i * gap + 5, y - 4, T) + logo(m, x + i * gap + 15, y - 12, 14)
+                   + t(x + i * gap + 35, y, SHORT[m], 12, T["ink2"]) for i, m in enumerate(MODELS))
 
 
 def save(name, fn, label):
     for th, T in THEMES.items():
         w, h, body = fn(T)
         (OUT / f"{name}-{th}.svg").write_text(
-            f'<svg xmlns="http://www.w3.org/2000/svg" width="{w}" height="{h}" viewBox="0 0 {w} {h}" role="img" '
-            f'aria-label="{escape(label)}"><title>{escape(label)}</title><rect width="{w}" height="{h}" fill="{T["bg"]}"/>{body}</svg>')
+            f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="{w}" height="{h}" '
+            f'viewBox="0 0 {w} {h}" role="img" aria-label="{escape(label)}"><title>{escape(label)}</title>'
+            f'{logo_defs(T)}<rect width="{w}" height="{h}" fill="{T["bg"]}"/>{body}</svg>')
 
 
 ORDER = sorted(MODELS, key=lambda m: -TR[m]["BOSS_SCORE"])
@@ -177,14 +199,16 @@ def company(T):
         pts = " ".join(f"{X(i + 1):.1f},{Y(v):.1f}" for i, v in enumerate(c))
         b += (f'<polyline points="{pts}" fill="none" stroke="{col}" stroke-width="{2.2 if dash is None else 1.5}" '
               f'stroke-linejoin="round"' + (f' stroke-dasharray="{dash}"' if dash else "") + "/>")
-        ends.append([Y(c[-1]), lab, col, dash is None, D["company"][who]["equity"]])
+        ends.append([Y(c[-1]), lab, col, dash is None, D["company"][who]["equity"], who])
     ends.sort()
     for k in range(1, len(ends)):
         ends[k][0] = max(ends[k][0], ends[k - 1][0] + 19)
     b += t(w - L, py - 14, "Final equity", 11, T["muted"], 600, "end")
-    for yv, lab, col, is_model, eq in ends:
+    for yv, lab, col, is_model, eq, who in ends:
         b += hline(X(24) + 4, X(24) + 14, yv, T, col, 1.5)
-        b += t(X(24) + 20, yv + 4, lab, 12, T["ink"] if is_model else T["ink2"], 600 if is_model else 400)
+        if is_model:
+            b += logo(who, X(24) + 20, yv - 8, 14)
+        b += t(X(24) + (40 if is_model else 20), yv + 4, lab, 12, T["ink"] if is_model else T["ink2"], 600 if is_model else 400)
         b += t(w - L, yv + 4, f"${eq / 1000:.1f}k", 12, T["ink"] if is_model else T["ink2"], 600 if is_model else 400, "end")
     ev = [f"{wk} {lab.lower()}" for wk, _, lab in EVENTS]
     b += t(L, h - 50, "Events by week: " + "  ·  ".join(ev[:5]), 11, T["muted"])
@@ -435,7 +459,7 @@ def pitch(T):
     x0, c = 260, 90
     y0 = 96
     for j, m in enumerate(ORDER):
-        b += dot(m, x0 + j * c + c / 2, y0 - 4, T)
+        b += logo(m, x0 + j * c + c / 2 - 9, y0 - 14, 18)
     b += t(700, y0, "Overall win rate", 11, T["muted"], 600) + t(w - L, y0, "Elo", 11, T["muted"], 600, "end")
     b += hline(L, w - L, y0 + 10, T)
     for i, a in enumerate(ORDER):

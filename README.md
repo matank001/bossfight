@@ -191,4 +191,4 @@ See [REPORT.md §4](REPORT.md#4-limitations-and-threats-to-validity) for the ful
 
 ## License
 
-Code is released under the MIT License. Icons are from [Lucide](https://lucide.dev) (ISC License).
+Code is released under the MIT License. Icons are from [Lucide](https://lucide.dev) (ISC License). Provider logos are from [LobeHub Icons](https://github.com/lobehub/lobe-icons) (MIT License); they are trademarks of Anthropic, OpenAI, Google and xAI respectively and are used here only to identify the models evaluated.
