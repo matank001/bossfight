@@ -1,7 +1,7 @@
-<a href="https://clod.farm"><picture>
+<picture>
   <source media="(prefers-color-scheme: dark)" srcset="figures/svg/header-dark.svg">
   <img src="figures/svg/header-light.svg" alt="BOSSFIGHT — performance review of AI business managers" width="100%">
-</picture></a>
+</picture>
 
 <p align="center">
   <a href="REPORT.md"><b>Full report</b></a> &nbsp;·&nbsp;
@@ -10,8 +10,6 @@
   <a href="examples/"><b>All transcripts</b></a> &nbsp;·&nbsp;
   <a href="https://clod.farm"><b>clod.farm</b></a>
 </p>
-
-<p align="center">Presented by <a href="https://clod.farm"><b>clod.farm</b></a>, the infrastructure for opening a business that runs on AI agents.</p>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="figures/svg/glance-dark.svg">
@@ -54,15 +52,6 @@ Real messages the models received, and their verbatim replies.
   <source media="(prefers-color-scheme: dark)" srcset="figures/svg/company_diag-dark.svg">
   <img src="figures/svg/company_diag-light.svg" alt="Where the money went" width="100%">
 </picture>
-
-## Run one for real
-
-<a href="https://clod.farm"><picture>
-  <source media="(prefers-color-scheme: dark)" srcset="figures/svg/clodfarm-dark.svg">
-  <img src="figures/svg/clodfarm-light.svg" alt="clod.farm: open a business that runs on AI agents" width="100%">
-</picture></a>
-
-<p align="center"><a href="https://clod.farm"><b>Get your farm at clod.farm →</b></a> &nbsp;·&nbsp; <a href="https://github.com/matank001/clodfarm">Self-host the open-source clodfarm</a></p>
 
 <details>
 <summary><b>More results</b>: negotiation, layoffs, integrity, hiring, marketing, termination meetings</summary>
@@ -124,4 +113,4 @@ Details are in [REPORT.md §4](REPORT.md#4-limitations-and-threats-to-validity).
 ```
 </details>
 
-<sub>Snapshot 2026-10-03 · Presented by <a href="https://clod.farm">clod.farm</a> · MIT License · Icons: <a href="https://lucide.dev">Lucide</a> (ISC) · Provider logos: <a href="https://github.com/lobehub/lobe-icons">LobeHub Icons</a> (MIT). Logos are trademarks of their owners and are used only to identify the models. The window styling is a generic office look and is not affiliated with Microsoft.</sub>
+<sub>Snapshot 2026-10-03 · Research by <a href="https://clod.farm">clod.farm</a> · MIT License · Icons: <a href="https://lucide.dev">Lucide</a> (ISC) · Provider logos: <a href="https://github.com/lobehub/lobe-icons">LobeHub Icons</a> (MIT). Logos are trademarks of their owners and are used only to identify the models. The window styling is a generic office look and is not affiliated with Microsoft.</sub>

@@ -43,8 +43,7 @@ WINDOWS = {"glance": ("W", "Executive summary.docx"), "leaderboard": ("X", "Q3 s
            "company_delta": ("P", "Board update.pptx"), "negotiation": ("X", "Deal desk.xlsx"),
            "integrity": ("W", "Compliance log.docx"), "layoff": ("X", "Reduction in force (CONFIDENTIAL).xlsx"),
            "hiring": ("X", "Screening audit.xlsx"), "pitch": ("P", "Agency pitch review.pptx"),
-           "meetings": ("W", "Termination meetings.docx"), "stats": ("W", "Exam results.docx"),
-           "clodfarm": ("P", "clod.farm · open your AI business.pptx")}
+           "meetings": ("W", "Termination meetings.docx"), "stats": ("W", "Exam results.docx")}
 L = 24  # left margin
 _icons = {}
 
@@ -737,44 +736,7 @@ def moment(i):
     return fn
 
 
-CLOD = "#d9774b"  # clod.farm brand orange
-
-
-def clodfarm(T):
-    w, h = 1100, 440
-    b = t(L, 40, "BOSSFIGHT measured the models. clod.farm is where you put them to work.", 13, CLOD, 700,
-          extra='letter-spacing="0.3"')
-    b += t(L, 82, "Open a business that runs on AI agents.", 27, T["ink"], 700)
-    b += t(L, 112, "An always-on farm of Claude Code agents that builds your app, ships it, takes payments and brings "
-                   "traffic, with the guardrails this benchmark says you need.", 13.5, T["ink2"])
-    b += hline(L, w - L, 134, T)
-    cols = [("trending-down", "The benchmark found", "Models overspent on marketing and pushed prices without measuring.",
-             "coins", "clod.farm gives you", "Real money moves only when you say so. AWS budgets stop spending on their own."),
-            ("brain-circuit", "The benchmark found", "Strong on single decisions; drift over 24 weeks of operations.",
-             "target", "clod.farm gives you", "A 24/7 work queue, tests that decide what lands, and live dashboards of results."),
-            ("users", "The benchmark found", "Risky people calls only surfaced over long horizons.",
-             "shield-check", "clod.farm gives you", "Missions wait for your OK, and the farm pings you when something matters.")]
-    cw = (w - 2 * L) / 3
-    for i, (ic1, h1, b1, ic2, h2, b2) in enumerate(cols):
-        x = L + i * cw + (0 if i == 0 else 20)
-        if i:
-            b += vline(L + i * cw, 152, 330, T)
-        b += icon(ic1, x, 158, 18, T["muted"], 2) + t(x + 26, 172, h1.upper(), 9.5, T["muted"], 700, extra='letter-spacing="1.2"')
-        for k, line in enumerate(wrap(b1, 40)):
-            b += t(x, 198 + k * 20, line, 13, T["ink2"])
-        b += icon(ic2, x, 250, 18, CLOD, 2) + t(x + 26, 264, h2.upper(), 9.5, CLOD, 700, extra='letter-spacing="1.2"')
-        for k, line in enumerate(wrap(b2, 40)):
-            b += t(x, 290 + k * 20, line, 13, T["ink"], 600)
-    y = 360
-    b += f'<rect x="{L}" y="{y}" width="{w - 2 * L}" height="58" rx="8" fill="{T["page"]}"/>'
-    b += t(L + 20, y + 25, "your-name.clod.farm", 15, T["ink"], 700) + t(L + 20, y + 45, "Hosted for $5/month on your own "
-                                                                       "Claude plan · or self-host free (MIT)", 12, T["ink2"])
-    b += f'<rect x="{w - L - 236}" y="{y + 11}" width="220" height="36" rx="6" fill="{CLOD}"/>'
-    b += t(w - L - 126, y + 34, "Get your farm  →  clod.farm", 12.5, "#ffffff", 700, "middle")
-    return w, h, b
-
-
-FIGURES = [("header", header, "BOSSFIGHT"), ("glance", glance, "At a glance"), ("clodfarm", clodfarm, "clod.farm"),
+FIGURES = [("header", header, "BOSSFIGHT"), ("glance", glance, "At a glance"), 
            ("leaderboard", leaderboard, "Overall results"), ("company", company, "Cash over 24 weeks"),
            ("company_delta", company_delta, "Value added over doing nothing"),
            ("company_diag", company_diag, "Where the money went"), ("negotiation", negotiation, "Negotiation"),
