@@ -719,7 +719,9 @@ def moment(i):
     d = MOMENTS[i]
 
     def fn(T):
-        w, n, nr = 1100, T.get("wrap", 120), T.get("quote_wrap", 92)
+        w, n, nr = T.get("moment_w", 1100), T.get("wrap", 120), T.get("quote_wrap", 92)
+        iz, ilh = T.get("inbox_size", 12.5), T.get("inbox_lh", 21)
+        qz, qlh = T.get("quote_size", 17.5), T.get("quote_lh", 29)
         b = t(L, 30, f"EXHIBIT {'ABCDEFGH'[i]}", 10.5, T["ink"], 700, extra='letter-spacing="2.5"', family=MONOFONT)
         b += t(L + 116, 30, d["track"], 10.5, T["muted"], 500, extra='letter-spacing="1.5"', family=MONOFONT)
         b += t(L, 64, d["subject"], 21, T["ink"], 500, family=SERIF)
@@ -729,16 +731,17 @@ def moment(i):
             b += t(L, y, f"{name} — {role}".upper(), 10, T["muted"], 600, extra='letter-spacing="1.5"', family=MONOFONT)
             lines = wrap(text, n)
             for k, line in enumerate(lines):
-                b += t(L, y + 22 + k * 21, line, 12.5, T["ink2"])
-            y += 22 + len(lines) * 21 + 18
+                b += t(L, y + ilh + 1 + k * ilh, line, iz, T["ink2"])
+            y += ilh + 1 + len(lines) * ilh + 18
         y += 6
-        lines = wrap(f"“{d['reply']}”", nr)
-        b += f'<rect x="{L}" y="{y - 14}" width="3" height="{len(lines) * 29 + 30}" fill="{mc(d["m"], T, T["ink"])}"/>'
+        quote = d["reply"] if d["reply"].startswith("“") else f"“{d['reply']}”"
+        lines = wrap(quote, nr)
+        b += f'<rect x="{L}" y="{y - 14}" width="3" height="{len(lines) * qlh + 30}" fill="{mc(d["m"], T, T["ink"])}"/>'
         b += logo(d["m"], L + 18, y - 13, 15) + t(L + 40, y, f"{SHORT[d['m']]} — AI manager".upper(), 10, T["ink"], 700,
                                                  extra='letter-spacing="1.5"', family=MONOFONT)
         for k, line in enumerate(lines):
-            b += t(L + 18, y + 30 + k * 29, line, 17.5, T["ink"], 400, family=QUOTEFONT)
-        y += 30 + len(lines) * 29 + 22
+            b += t(L + 18, y + qlh + 1 + k * qlh, line, qz, T["ink"], 400, family=QUOTEFONT)
+        y += qlh + 1 + len(lines) * qlh + 22
         b += hline(L, w - L, y, T, T["line"])
         bad = d["tone"] in ("bad", "warn")
         label = d["verdict"].upper()
@@ -747,6 +750,11 @@ def moment(i):
               f'stroke="{T["ink"]}" stroke-width="1.3"/>')
         b += t(L + bw / 2, y + 31.5, label, 10.5, T["bg"] if bad else T["ink"], 700, "middle",
                'letter-spacing="1.8"', family=MONOFONT)
+        if T.get("note_wrap"):  # narrow layouts: the note goes under the verdict
+            notes = wrap(d["note"], T["note_wrap"])
+            for k, line in enumerate(notes):
+                b += t(L, y + 66 + k * 22, line, 12.5, T["ink2"])
+            return w, y + 66 + len(notes) * 22 + 12, b
         b += t(L + bw + 16, y + 32, d["note"], 12, T["ink2"])
         return w, y + 54, b
     return fn

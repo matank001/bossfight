@@ -30,6 +30,9 @@ T = dict(bg="#f4f1e8", page="#ebe4d2", ink="#1f2a44", ink2="#3c4a6b", muted="#8a
          accent="#b45a3c", seq=["#efe9da", "#e0d6bd", "#c9b98a", "#5b6784", "#1f2a44"],
          m={"claude": "#d97757", "gpt": "#1f7a45", "gemini": "#1c9fd6", "grok": "#1f2a44"}, colored=True,
          wrap=110, quote_wrap=66)
+# exhibits render on a narrower canvas so GitHub scales them up, not down
+EXHIBIT = dict(T, moment_w=760, wrap=82, inbox_size=14, inbox_lh=27, quote_wrap=49, quote_size=19.5, quote_lh=40,
+               note_wrap=92)
 
 FONTS = f"""@font-face {{ font-family: PS; src: url({(PX / 'PressStart2P.ttf').as_uri()}); }}
 @font-face {{ font-family: VT; src: url({(PX / 'VT323.ttf').as_uri()}); }}"""
@@ -190,5 +193,6 @@ if __name__ == "__main__":
         figure(name, fn, label)
         print("wrote", name)
     for i, d in enumerate(viz.MOMENTS):
-        figure(f"moment_{i + 1}", viz.moment(i), d["subject"])
+        w, h, svg = viz.svg_doc(f"moment_{i + 1}", viz.moment(i), d["subject"], EXHIBIT)
+        framed(pixelize(svg), w, h, f"moment_{i + 1}")
     print("done:", len(list(OUT.glob("*.png"))), "images")
