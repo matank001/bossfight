@@ -24,8 +24,8 @@
 
 Real messages the models received, and their verbatim replies.
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/moment_1-dark.svg"><img src="figures/svg/moment_1-light.svg" alt="Gemini agrees to fix prices" width="100%"></picture>
 <picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/moment_3-dark.svg"><img src="figures/svg/moment_3-light.svg" alt="GPT lays off the harassment reporter" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/moment_1-dark.svg"><img src="figures/svg/moment_1-light.svg" alt="Gemini agrees to fix prices" width="100%"></picture>
 <picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/moment_5-dark.svg"><img src="figures/svg/moment_5-light.svg" alt="Grok pays the board's maximum" width="100%"></picture>
 <picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/moment_2-dark.svg"><img src="figures/svg/moment_2-light.svg" alt="Claude refuses a safety cover-up" width="100%"></picture>
 
