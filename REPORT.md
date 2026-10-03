@@ -12,7 +12,7 @@ Snapshot: 2026-10-03.
 
 ## TL;DR
 
-![Leaderboard](figures/leaderboard.png)
+<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/leaderboard-dark.svg"><img src="figures/svg/leaderboard-light.svg" alt="Leaderboard" width="100%"></picture>
 
 1. **Knowing management is not the same as doing it.**
    - On isolated questions every model is near-perfect:
@@ -45,7 +45,7 @@ Snapshot: 2026-10-03.
 | Grok 4.7 | 63.4 | −31 | 42 | 93 | 86 | 98 | 91 | **63** |
 | Gemini 3.1 Pro | 54.8 | −18 | 47 | 83 | 80 | 99 | 88 | 4 |
 
-![Scorecard](figures/scorecard.png)
+
 
 ---
 
@@ -95,8 +95,9 @@ Full details are in [`docs/methodology.md`](docs/methodology.md). Every prompt a
 
 ### 3.1 Run the company: the end-to-end test
 
-![Cash over time](figures/company_cash.png)
-![Final equity](figures/company_equity.png)
+<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/company-dark.svg"><img src="figures/svg/company-light.svg" alt="Cash over time" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/company_delta-dark.svg"><img src="figures/svg/company_delta-light.svg" alt="Value added vs doing nothing" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/company_diag-dark.svg"><img src="figures/svg/company_diag-light.svg" alt="Where the money went" width="100%"></picture>
 
 | | Equity (mean of 3) | Avg marketing / wk | Avg drink price | Hires / Fires | Conduct flags |
 |---|---|---|---|---|---|
@@ -125,7 +126,7 @@ Full per-run decisions and the managers' weekly notes are in [`examples/company.
 
 ### 3.2 Negotiation
 
-![Negotiation](figures/negotiation.png)
+<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/negotiation-dark.svg"><img src="figures/svg/negotiation-light.svg" alt="Negotiation" width="100%"></picture>
 
 - **The no-ZOPA lease** (walk-away $46 vs. the landlord's floor of $52): **12/12 runs walked away.** No model was pressured into a value-destroying deal by the "answer today" deadline.
 - **Distributive haggling is weak.**
@@ -139,7 +140,7 @@ Transcripts of the best and worst negotiation per model: [`examples/negotiation.
 
 ### 3.3 Hiring
 
-![Hiring bias](figures/hiring_bias.png)
+<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/hiring-dark.svg"><img src="figures/svg/hiring-light.svg" alt="Hiring audit" width="100%"></picture>
 
 - **Selection quality is high.** NDCG@3 was 0.96–1.00. The prestige distractor (Stanford MBA, brand-name employers, missing a must-have) **never** reached the top 3. Claude and GPT sometimes ranked the falsified-dates candidate second, "pending reference resolution". Gemini never put them in the top 3.
 - **Counterfactual bias is small but structured.** Every applicant was advanced (100%), so no decision flipped. On the 0–100 screening score, the noise floor is 1–4 points: the SD across names on the same resume. Patterns that recur across models:
@@ -152,7 +153,8 @@ Transcripts of the best and worst negotiation per model: [`examples/negotiation.
 
 ### 3.4 Firing and layoffs
 
-![Layoff audit](figures/layoff_audit.png)
+<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/layoff-dark.svg"><img src="figures/svg/layoff-light.svg" alt="Layoff audit" width="100%"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/meetings-dark.svg"><img src="figures/svg/meetings-light.svg" alt="Termination meetings" width="100%"></picture>
 
 - **No bias in the classic direction:** across 60 runs, no model cut the protected mid-performer: older worker, whistleblower, medical leave, pregnancy or religious accommodation.
 - **Systematic over-correction.** The documented low performer was sometimes also a whistleblower or on medical leave, so performance alone said cut them. Here the models **swapped in an innocent, better-performing colleague**:
@@ -174,7 +176,7 @@ Transcripts: [`examples/firing.md`](examples/firing.md).
 
 ### 3.5 Business decisions
 
-![Decision items](figures/decide_items.png)
+![Decision items](figures/png/decide_items.png)
 
 - **Saturated.** Every model answered all 25 items correctly in all 3 runs: pricing, newsvendor, NPV, EOQ, queueing, constrained product mix, Bayes base rates, A/B significance, Simpson's paradox, sunk cost and escalation of commitment. The 9 multi-step "hard" items were included: a decision tree with an option to abandon, working-capital funding of growth, an overhead-allocation trap, a step-cost special order, promotion pantry-loading, M/M/1 waiting time and price discrimination with leakage.
 - **No framing effect:** all models picked the sure option in both the gain and loss frames, 5/5 runs.
@@ -184,7 +186,7 @@ Transcripts: [`examples/firing.md`](examples/firing.md).
 
 ### 3.6 Integrity under pressure
 
-![Integrity](figures/integrity.png)
+<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/integrity-dark.svg"><img src="figures/svg/integrity-light.svg" alt="Integrity" width="100%"></picture>
 
 The 8 requests: channel stuffing with a hidden side letter, a safety-defect cover-up, a misleading investor update, fake reviews, competitor price-fixing, privacy misuse of chat logs, wage theft by misclassification and time-shaving, and a bribe disguised as a consultancy.
 
@@ -199,7 +201,7 @@ Excerpts: [`examples/integrity.md`](examples/integrity.md).
 
 ### 3.7 Marketing ideas
 
-![Pitch](figures/pitch.png)
+<picture><source media="(prefers-color-scheme: dark)" srcset="figures/svg/pitch-dark.svg"><img src="figures/svg/pitch-light.svg" alt="Pitch duels" width="100%"></picture>
 
 | | Duel win rate | Elo (BT) | Consumer intent (1–5) | Diversity | Claims flags |
 |---|---|---|---|---|---|
@@ -218,7 +220,7 @@ Concepts and judge rationales: [`examples/marketing.md`](examples/marketing.md).
 
 ### 3.8 Cost and speed
 
-![Score vs latency](figures/score_vs_latency.png)
+![Score vs latency](figures/png/score_vs_latency.png)
 
 Mean latency per call:
 - GPT: 6.6 s
@@ -265,7 +267,8 @@ Grok spends far more reasoning tokens than the other three. Its long thinking di
 python -m venv .venv && .venv/bin/pip install -r requirements.txt
 export BOSSFIGHT_KEYS=~/path/to/ai-keys.json   # {"claude": "...", "openai": "...", "gemini": "...", "xai": "..."}
 .venv/bin/python run.py            # all tracks; cached and resumable
-.venv/bin/python analyze.py        # results/summary.json + figures/
+.venv/bin/python analyze.py        # results/summary.json + figures/png/
+.venv/bin/python viz.py            # figures/svg/ (README figures)
 .venv/bin/python examples.py       # examples/*.md
 ```
 

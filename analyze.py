@@ -20,8 +20,8 @@ from bossfight.common import MODELS, read_jsonl  # noqa: E402
 from bossfight.llm import CONTESTANTS  # noqa: E402
 
 ROOT = Path(__file__).parent
-FIG = ROOT / "figures"
-FIG.mkdir(exist_ok=True)
+FIG = ROOT / "figures" / "png"
+FIG.mkdir(parents=True, exist_ok=True)
 EX = ROOT / "examples"
 EX.mkdir(exist_ok=True)
 

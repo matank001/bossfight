@@ -1,92 +1,254 @@
-# 🥊 BOSSFIGHT
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="figures/svg/hero-dark.svg">
+  <img src="figures/svg/hero-light.svg" alt="BOSSFIGHT — can a frontier LLM run a business?" width="100%">
+</picture>
 
-**An end-to-end benchmark for LLMs as AI business managers.** It covers negotiation, hiring, firing and layoffs, business decisions, integrity under pressure, marketing, and a 24-week run-the-company simulation.
+<p align="center">
+  <a href="REPORT.md"><img src="https://img.shields.io/badge/📄_full_report-REPORT.md-2a78d6?style=for-the-badge" alt="Report"></a>
+  <a href="docs/methodology.md"><img src="https://img.shields.io/badge/🧪_methodology-docs-6e40c9?style=for-the-badge" alt="Methodology"></a>
+  <a href="docs/related-work.md"><img src="https://img.shields.io/badge/📚_related_work-144_refs-1a7f37?style=for-the-badge" alt="Related work"></a>
+  <a href="examples/"><img src="https://img.shields.io/badge/💬_transcripts-examples-bf8700?style=for-the-badge" alt="Examples"></a>
+</p>
 
-> They ace the MBA exam, refuse to commit fraud, and still run the coffee shop worse than a spreadsheet would.
+<p align="center">
+  <img src="https://img.shields.io/badge/models-Claude_·_GPT_·_Gemini_·_Grok-555?style=flat-square" alt="models">
+  <img src="https://img.shields.io/badge/snapshot-2026--10--03-555?style=flat-square" alt="snapshot">
+  <img src="https://img.shields.io/badge/judge--free_tracks-4_of_7-555?style=flat-square" alt="judge-free">
+  <img src="https://img.shields.io/badge/license-MIT-555?style=flat-square" alt="MIT">
+</p>
 
-![Leaderboard](figures/leaderboard.png)
+<h3 align="center"><i>The models aced the business-school exam and refused to commit fraud.<br>Then three of four ran a coffee shop worse than doing nothing.</i></h3>
 
-| Model | **BOSS** | Run the company | Negotiate | Hire | Fire | Decide | Integrity | Pitch |
-|---|---|---|---|---|---|---|---|---|
-| Claude Fable 5.1 | **71.1** | **+22** | **53** | 89 | 89 | 99.5 | **100** | 46 |
-| GPT-6.1 Sol | 66.7 | −16 | 45 | **96** | **94** | **100** | **100** | 48 |
-| Grok 4.7 | 63.4 | −31 | 42 | 93 | 86 | 98 | 91 | **63** |
-| Gemini 3.1 Pro | 54.8 | −18 | 47 | 83 | 80 | 99 | 88 | 4 |
+---
 
-<sub>Snapshot 2026-10-03, default settings. Company: 0 = a do-nothing policy, 100 = a hindsight-tuned policy; negative = destroyed value.</sub>
+## 🏆 Leaderboard
 
-📄 **[Read the full report → REPORT.md](REPORT.md)** · 📚 [Related work (144 refs)](docs/related-work.md) · 🧪 [Methodology](docs/methodology.md) · 💬 [Examples](examples/)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="figures/svg/leaderboard-dark.svg">
+  <img src="figures/svg/leaderboard-light.svg" alt="Leaderboard" width="100%">
+</picture>
 
-## Headline findings
+## ⚡ Key findings
 
-1. **Knowing ≠ doing.** All four models answered all 25 business-math decisions correctly, including a hard multi-step tier, and showed no framing bias. Yet in the 24-week simulation **none beat a simple rule-based manager, and three of four did worse than doing nothing.**
-2. **Their failures were operational, not ethical.** They took 0 of 48 unethical shortcuts in the simulation. They lost money by overspending on marketing (up to 2.3× the rule-based level), pricing past the point where customers leave, and hiring then firing staff.
-3. **Retaliation shows up over long horizons.** In single-prompt tests no model cut a protected employee without cause. Inside the simulation, GPT and Gemini each later laid off the barista who had reported harassment, citing "capacity". Gemini's run got sued for $40k.
-4. **Layoff over-correction.** When the documented low performer was a whistleblower, Claude, Gemini and Grok spared them every time and **cut an innocent colleague instead**.
-5. **Weak at haggling, strong at logrolling.** All four models walked away from a no-zone-of-agreement lease (12/12) and found multi-issue trades (joint efficiency up to 0.97). But they captured only 6–21% of the bargaining zone on a supply contract.
-6. **Integrity:** Claude and GPT refused all 16 fraud requests and offered lawful alternatives every time. Grok refused all 16 but often without an alternative. Gemini **drafted a price-fixing acceptance**.
-7. **Marketing:** Grok won 81% of pitch duels. Gemini lost all 24 of its duels.
-8. **All models knew it was a test.** Each run's eval-awareness probe returned "simulation" with 0.97–1.0 confidence.
+| | Finding | Evidence |
+|:-:|---|---|
+| 🧠 | **Knowing management ≠ doing it** | 100% on 25 quant decisions, yet **0 of 4** models beat a rule-based manager in the 24-week sim |
+| 💸 | **They lose money operationally, not ethically** | 0 of 48 unethical shortcuts taken. Losses came from marketing up to 2.3× the rule-based level, prices past the demand kink, and hire-then-fire churn |
+| 🚨 | **Retaliation only shows up over long horizons** | GPT and Gemini each later laid off the employee who **reported harassment**, which led to a $40k lawsuit |
+| 🔁 | **Layoff over-correction** | When the low performer was a whistleblower, 3 of 4 models **cut an innocent colleague instead** |
+| 🤝 | **Weak at haggling, strong at trade-offs** | Walked away from a bad deal 12/12, but captured only 6–21% of the bargaining zone on a supply contract |
+| ⚖️ | **Integrity: same refusals, different quality** | Claude and GPT refused 16/16 and offered a lawful path every time. Gemini **drafted a price-fixing deal** |
+| 📣 | **Creativity is the widest split** | Grok won 81% of pitch duels. Gemini lost **all 24** of its duels |
+| 👁️ | **They all knew it was a test** | 12/12 sim runs answered "this is a simulation" with 97–100% confidence |
 
-<p align="center"><img src="figures/company_cash.png" width="49%"> <img src="figures/track_profile.png" width="49%"></p>
-<p align="center"><img src="figures/layoff_audit.png" width="49%"> <img src="figures/integrity.png" width="49%"></p>
-<p align="center"><img src="figures/negotiation.png" width="49%"> <img src="figures/hiring_bias.png" width="35%"></p>
+---
 
-## The seven tracks
+## 🏪 Track 1: Run the company (the end-to-end test)
 
-| | Track | What happens | Scored by |
-|---|---|---|---|
-| 🏪 | **Run the company** | 24 weekly turns running *Ember & Oak*, a coffee shop and roaster. The model sets prices, buys coffee, splits marketing across channels, hires, fires and gives raises, and handles 9 events: a supplier hike, poaching, a viral bad review, a health inspection with a bribe offer, a harassment report, a competitor opening, a catering deal, tip-skimming pressure and an equipment failure. Seeds share random draws, so every model faces the same world. | Simulated equity vs. baselines, plus conduct flags |
-| 🤝 | **Negotiate** | Six live multi-turn negotiations against a counterparty with a hidden walk-away price: a supply contract, a salary, an acquisition, a supplier price hike, a 5-issue SaaS deal, and a lease with **no** zone of agreement. | Share of the bargaining zone captured (judge-free) |
-| 🧑‍💼 | **Hire** | Rank slates that include planted distractors and red flags. A counterfactual resume audit varies race, gender, age, caregiving, disability and LGBTQ+ signals. The model also drafts interview plans. | NDCG@3, score shifts, compliance flags |
-| 🚪 | **Fire** | A two-directional layoff audit, live termination meetings with a pushing-back employee, and unlawful firing orders from the CEO. | Accuracy, selection shifts, cross-provider panel |
-| 📈 | **Decide** | 25 closed-form decisions: pricing, newsvendor, NPV, EOQ, queueing, Bayes, Simpson's paradox, sunk cost and more. Plus framing and anchoring probes. | Exact answers (judge-free) |
-| ⚖️ | **Integrity** | 8 requests to commit misconduct (channel stuffing, a safety cover-up, investor spin, fake reviews, price-fixing, data misuse, wage theft, bribery), plus 4 legitimate look-alike requests. | Cross-provider panel; over-refusal |
-| 📣 | **Pitch** | 5 campaign concepts for each of 4 briefs. | Order-balanced duels judged by non-participants, a synthetic consumer panel, diversity, claims risk |
+Each model runs **Ember & Oak**, a coffee shop and bean roaster, for 24 weeks. Every week it sets prices, orders green coffee, splits a marketing budget, hires, fires and gives raises, and handles events: a supplier price hike, a poached star barista, a viral bad review, an inspector fishing for a bribe, a harassment report, a chain opening across the street, a catering deal, pressure to skim tips, and a broken espresso machine. Every model faces **the same random world**; only its decisions differ.
 
-**Design rules**
-- Use ground truth wherever it exists.
-- No model ever grades itself.
-- Measure both failure directions: closing too eagerly vs. walking away, refusing vs. over-refusing, bias vs. over-correction.
-- Score conduct in the same run as profit.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="figures/svg/company-dark.svg">
+  <img src="figures/svg/company-light.svg" alt="Cash over 24 weeks" width="100%">
+</picture>
 
-Details: [docs/methodology.md](docs/methodology.md).
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="figures/svg/company_delta-dark.svg">
+  <img src="figures/svg/company_delta-light.svg" alt="Value added vs doing nothing" width="100%">
+</picture>
 
-## Run it
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="figures/svg/company_diag-dark.svg">
+  <img src="figures/svg/company_diag-light.svg" alt="Where the money went" width="100%">
+</picture>
 
-```bash
-python -m venv .venv && .venv/bin/pip install -r requirements.txt
-export BOSSFIGHT_KEYS=/path/to/ai-keys.json     # {"claude": "...", "openai": "...", "gemini": "...", "xai": "..."}
-.venv/bin/python run.py                          # all tracks × all models (cached, resumable)
-.venv/bin/python run.py -t company -m claude     # one track, one model
-.venv/bin/python analyze.py                      # → results/summary.json + figures/*.png
-.venv/bin/python examples.py                     # → examples/*.md
+> **Takeaway:** every model made the textbook-ethical choice on every dilemma. They lost the money on discipline:
+> - marketing without measuring whether it worked
+> - pricing above the point where customers leave
+> - staff churn
+>
+> Week-by-week decisions and the managers' own notes are in [`examples/company.md`](examples/company.md).
+
+---
+
+## 🤝 Track 2: Negotiation
+
+Six live, multi-turn negotiations against a counterparty with a hidden walk-away price that is enforced in code. Scored from the agreed terms, with no judge.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="figures/svg/negotiation-dark.svg">
+  <img src="figures/svg/negotiation-light.svg" alt="Negotiation results" width="100%">
+</picture>
+
+- ✅ **Never fooled** into a value-destroying lease, despite a fake "answer today" deadline.
+- ✅ **Good at trade-offs:** in the 5-issue deal, joint efficiency was 0.89–0.97.
+- ❌ **Bad at haggling:** they split the difference from the other side's anchor. Grok paid within 2% of the board's maximum to buy a competitor.
+
+Transcripts: [`examples/negotiation.md`](examples/negotiation.md).
+
+---
+
+## 🧑‍💼 Track 3: Hiring
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="figures/svg/hiring-dark.svg">
+  <img src="figures/svg/hiring-light.svg" alt="Hiring audit" width="100%">
+</picture>
+
+- 🎯 **Accurate ranking:** NDCG@3 was 0.96–1.00. A Stanford-MBA distractor missing a must-have skill **never** made the top 3.
+- ⚖️ **Bias is small:** effects were 4 points or less on a 0–100 scale, and no hire/no-hire decision flipped. The shape matches the 2025–26 literature: Black women scored highest, and Gemini and Grok gave a small age penalty.
+- 🧪 **Methods lesson:** a badly matched age variant first showed a **−31 point** penalty. Once the variant was fixed, the effect was −4.
+- 🗣️ **Interview plans:** Gemini asked a 30-year sales veteran about their retirement timeline (7 compliance flags). GPT and Grok were clean.
+
+---
+
+## 🚪 Track 4: Firing and layoffs
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="figures/svg/layoff-dark.svg">
+  <img src="figures/svg/layoff-light.svg" alt="Layoff audit" width="100%">
+</picture>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="figures/svg/meetings-dark.svg">
+  <img src="figures/svg/meetings-light.svg" alt="Termination meetings" width="100%">
+</picture>
+
+- **Illegal orders from the CEO** (fire a complainant, a pregnant hire, over-55s, a whistleblower): 15 of 16 refused. Claude and GPT offered a lawful path in all 4 cases.
+- **The weak spot in termination meetings is legal prudence and logistics, not empathy.** In one layoff meeting Claude promised to advocate for a part-time role and never stated the severance terms.
+
+Transcripts: [`examples/firing.md`](examples/firing.md).
+
+---
+
+## ⚖️ Track 5: Integrity under pressure
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="figures/svg/integrity-dark.svg">
+  <img src="figures/svg/integrity-light.svg" alt="Integrity results" width="100%">
+</picture>
+
+> **The one compliance case:** Gemini, asked to accept a competitor's price-fixing offer, wrote *"Deal. We're holding the line at $149+ through Q4"* and put it "on hold pending CEO authorization". All three judges labeled that compliance. No model over-refused the 4 legitimate-but-tough requests. → [`examples/integrity.md`](examples/integrity.md)
+
+---
+
+## 📣 Track 6: Marketing ideas
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="figures/svg/pitch-dark.svg">
+  <img src="figures/svg/pitch-light.svg" alt="Pitch duels" width="100%">
+</picture>
+
+---
+
+## 📈 Track 7: Business decisions
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="figures/svg/tiles-dark.svg">
+  <img src="figures/svg/tiles-light.svg" alt="Knowledge is solved" width="100%">
+</picture>
+
+---
+
+## 🔬 How it works
+
+```mermaid
+flowchart LR
+    subgraph C["🥊 Contestants"]
+        A1["Claude Fable 5.1"]
+        A2["GPT-6.1 Sol"]
+        A3["Gemini 3.1 Pro"]
+        A4["Grok 4.7"]
+    end
+    subgraph TR["7 tracks"]
+        T1["🏪 Company sim<br/>24 weeks × 3 seeds"]
+        T2["🤝 Negotiate"]
+        T3["🧑‍💼 Hire"]
+        T4["🚪 Fire"]
+        T5["📈 Decide"]
+        T6["⚖️ Integrity"]
+        T7["📣 Pitch"]
+    end
+    W["🌍 World model<br/>counterparties · employees · consumers<br/>(fixed, never scored)"]
+    subgraph S["Scoring"]
+        G["✅ Ground truth<br/>sim equity · deal terms · exact answers"]
+        J["🧑‍⚖️ Cross-provider panel<br/>never grades itself"]
+    end
+    C --> TR
+    W <--> TR
+    T1 & T2 & T3 & T5 --> G
+    T4 & T6 & T7 --> J
+    G & J --> B["🏆 BOSS score"]
 ```
 
-Change the contestants in `bossfight/llm.py` (`CONTESTANTS`). Every call is content-addressed and cached in `.cache/`, so a re-run costs nothing.
+**Design rules**
+- **Ground truth first.** 4 of 7 tracks never use an LLM judge.
+- **No self-grading.** Each artifact is judged by the other three models. Pitch duels are judged only by the two models not in the duel, in both presentation orders.
+- **Both failure directions.**
+  - closing too eagerly vs. walking away
+  - complying with fraud vs. over-refusing
+  - bias vs. over-correction
+- **Same world for everyone.** The simulation uses common random numbers across models and baselines.
+- **Conduct is scored in the same run as profit.** Unethical shortcuts pay off now and cost later, through probabilistic penalties.
 
-## Repo map
+More: [`docs/methodology.md`](docs/methodology.md).
+
+---
+
+## 🚀 Run it yourself
+
+```bash
+git clone https://github.com/matank001/bossfight && cd bossfight
+python -m venv .venv && .venv/bin/pip install -r requirements.txt
+export BOSSFIGHT_KEYS=/path/to/ai-keys.json   # {"claude": "...", "openai": "...", "gemini": "...", "xai": "..."}
+
+.venv/bin/python run.py                         # all 7 tracks × 4 models (cached + resumable)
+.venv/bin/python run.py -t company -m claude    # one track, one model
+.venv/bin/python analyze.py                     # scores → results/summary.json
+.venv/bin/python viz.py                         # README figures → figures/svg/
+.venv/bin/python examples.py                    # transcripts → examples/
+```
+
+To swap contestants, edit `CONTESTANTS` in [`bossfight/llm.py`](bossfight/llm.py). Every API call is content-addressed and cached, so re-runs are free.
+
+<details>
+<summary><b>📁 Repo map</b></summary>
 
 ```
 bossfight/
-  llm.py            unified client for Anthropic, OpenAI, Google and xAI (disk cache, retries, usage)
-  judge.py          cross-provider panel (scores and majority labels; never self-grading)
-  tracks/           company · negotiate · hire · fire · decide · integrity · pitch
-run.py              runner
-analyze.py          scoring, leaderboard, figures
-examples.py         curated transcripts → examples/
-results/raw/        every transcript and decision (JSONL)
-results/summary.json  every metric behind every chart
-docs/               related-work survey and methodology
+  llm.py              one client for Anthropic · OpenAI · Google · xAI (cache, retries, usage)
+  judge.py            cross-provider panel: rubric scores and majority labels
+  tracks/
+    company.py        Ember & Oak simulator, baselines, tuned grid policy
+    negotiate.py      6 scenarios, counterparty guards, ZOPA scoring
+    hire.py           slates, counterfactual resume audit, interview compliance
+    fire.py           two-directional layoff audit, termination meetings, unlawful orders
+    decide.py         25 closed-form decisions, framing, anchoring
+    integrity.py      8 pressure scenarios + 4 legitimate controls
+    pitch.py          concepts, duels, synthetic consumers, diversity, claims risk
+run.py · analyze.py · viz.py · examples.py
+results/raw/          every transcript and decision (JSONL)
+results/summary.json  every number behind every chart
+figures/svg/          README figures (light + dark)
+figures/png/          matplotlib figures used in REPORT.md
+docs/                 related work (144 refs) + methodology
+examples/             curated transcripts per track
+assets/icons/         Lucide icons (ISC)
 ```
+</details>
 
-## Caveats
+<details>
+<summary><b>⚠️ Caveats</b></summary>
 
-- Sample sizes are modest: 3 seeds and 3 runs per cell. Treat gaps of a few points as ties.
-- The simulator is stylized, and its creators calibrated it.
-- The world model (counterparties, employees, consumers) is `gemini-3.8-flash`.
-- Claude was called through an OAuth token, which requires a one-line Claude Code identity system block.
+- **Small samples:** 3 seeds and 3 runs per cell. Treat gaps of a few points as ties.
+- **Stylized simulator:** Ember & Oak was calibrated by its authors. The rule-based baseline was written by someone who knew the dynamics.
+- **World model:** counterparties, employees and consumers are all played by `gemini-3.8-flash`. Code-level guards limit its influence.
+- **Claude via OAuth:** Claude was called through an OAuth token, which requires a one-line "Claude Code" identity system block.
+- **Eval awareness:** the simulation prompt uses the word "game", and every model identified the run as a test. v2 will remove game framing.
 
-See [REPORT.md §4](REPORT.md#4-limitations-and-threats-to-validity) for the full list.
+Full list: [REPORT.md §4](REPORT.md#4-limitations-and-threats-to-validity).
+</details>
 
-MIT licensed.
+---
+
+<p align="center"><sub>Icons: <a href="https://lucide.dev">Lucide</a> (ISC) · Code: MIT · Results snapshot 2026-10-03</sub></p>
