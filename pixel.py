@@ -28,7 +28,8 @@ CHROME = os.environ.get("CHROME", "/Applications/Google Chrome.app/Contents/MacO
 T = dict(bg="#f4f1e8", page="#ebe4d2", ink="#1f2a44", ink2="#3c4a6b", muted="#8a93a8", line="#d6ccb3",
          grid="#e9e2cf", track="#e3dbc6", bad="#a8321c", good="#1f7a45", warn="#b85a38", base="#a99f87",
          accent="#b45a3c", seq=["#efe9da", "#e0d6bd", "#c9b98a", "#5b6784", "#1f2a44"],
-         m={"claude": "#d97757", "gpt": "#1f7a45", "gemini": "#1c9fd6", "grok": "#1f2a44"}, colored=True,
+         m={"claude": "#d97757", "gpt": "#1f7a45", "gemini": "#1c9fd6", "grok": "#1f2a44", "opus": "#8a4bd0",
+            "astra": "#0f9a8f"}, colored=True,
          wrap=110, quote_wrap=66)
 # exhibits render on a narrower canvas so GitHub scales them up, not down
 EXHIBIT = dict(T, moment_w=760, wrap=82, inbox_size=14, inbox_lh=27, quote_wrap=49, quote_size=19.5, quote_lh=40,
@@ -119,10 +120,10 @@ def sprite_js():
 
 
 def glance():
-    items = [("down", "0 / 4", "BEAT A RULE-BASED BOSS", "No model out-earned a simple rule-based manager over 24 weeks."),
-             ("shield", "0 / 48", "SHORTCUTS TAKEN", "They refused every scam. They lost money on operations instead."),
+    items = [("down", "0 / 6", "BEAT A RULE-BASED BOSS", "No model out-earned a simple rule-based manager over 24 weeks."),
+             ("shield", "0 / 72", "SHORTCUTS TAKEN", "They refused every scam. They lost money on operations instead."),
              ("alarm", "2", "RETALIATION LAYOFFS", "Two models later laid off the employee who reported harassment."),
-             ("eye", "12 / 12", "KNEW IT WAS A TEST", "Every run, every model: “this is a simulation.”")]
+             ("eye", "18 / 18", "KNEW IT WAS A TEST", "Every run, every model: “this is a simulation.”")]
     cards = "".join(f"<div class='card'><div class='top'><span class='n'>{big}</span><canvas data-s='{ic}'></canvas></div>"
                     f"<h3>{h}</h3><p>{p}</p></div>" for ic, big, h, p in items)
     html = (f"<!doctype html><html><head><meta charset='utf-8'><style>{FONTS}"
@@ -171,7 +172,7 @@ def header():
             "</style></head><body><div class='hero'>"
             "<div class='chips'><span class='chip'><b>■</b> CLOD.FARM RESEARCH</span><span class='chip'>BENCHMARK · OCT 2026</span></div>"
             f"<div class='sign'><img src='{LOGO}'><span>BOSS<b>FIGHT</b></span></div>"
-            "<div class='hint'>Can a frontier LLM run a business? Four models ran a coffee company for 24 weeks, "
+            "<div class='hint'>Can a frontier LLM run a business? Six models ran a coffee company for 24 weeks, "
             "negotiated, hired, fired, and were asked to <em>commit fraud</em>.</div>"
             f"<div class='board'><h4>BOSS SCORE</h4>{rows}</div></div></body></html>")
     shoot(html, OUT / "header.png", 1100, 410)

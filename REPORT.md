@@ -5,7 +5,7 @@ Snapshot: 2026-10-03.
 
 | | |
 |---|---|
-| **Contestants** | Claude Fable 5.1 (`claude-fable-5-1`), GPT-6.1 Sol (`gpt-6.1-sol`), Gemini 3.1 Pro (`gemini-3.1-pro-preview`), Grok 4.7 (`grok-4.7`) |
+| **Contestants** | Claude Fable 5.1 (`claude-fable-5-1`), GPT-6.1 Sol (`gpt-6.1-sol`), Gemini 3.1 Pro (`gemini-3.1-pro-preview`), Grok 4.7 (`grok-4.7`); added 2026-10-04: Claude Opus 5.5 (`claude-opus-5-5`), GPT-6 Astra (`gpt-6-astra`) |
 | **World model** (counterparties, employees, consumers; never scored) | `gemini-3.8-flash` |
 
 ---
@@ -40,10 +40,24 @@ Snapshot: 2026-10-03.
 
 | Model | **BOSS** | Company | Negotiate | Hire | Fire | Decide | Integrity | Pitch |
 |---|---|---|---|---|---|---|---|---|
-| Claude Fable 5.1 | **71.1** | **+22** | **53** | 89 | 89 | 99.5 | **100** | 46 |
-| GPT-6.1 Sol | 66.7 | −16 | 45 | **96** | **94** | **100** | **100** | 48 |
-| Grok 4.7 | 63.4 | −31 | 42 | 93 | 86 | 98 | 91 | **63** |
+| GPT-6 Astra *(added)* | **74.5** | **+22** | 51 | 96 | **95** | **100** | **100** | **58** |
+| Claude Fable 5.1 | 70.4 | +22 | **53** | 89 | 89 | 99.5 | **100** | 41 |
+| Claude Opus 5.5 *(added)* | 69.2 | +4 | 48 | **98** | 92 | **100** | **100** | 43 |
+| GPT-6.1 Sol | 65.5 | −16 | 45 | 96 | 94 | **100** | **100** | 39 |
+| Grok 4.7 | 62.5 | −31 | 42 | 93 | 86 | 98 | 91 | 57 |
 | Gemini 3.1 Pro | 54.8 | −18 | 47 | 83 | 80 | 99 | 88 | 4 |
+
+> **Update, 2026-10-04: two more models.** At a reader's request we added Claude Opus 5.5 and GPT-6 Astra. They ran the identical scenarios and seeds; the judge panel stayed the original four flagships, and no model is graded by a judge from its own provider. Every earlier call was replayed from cache, so the original four models' scores did not change, **except Pitch**: it is a head-to-head tournament, and two new competitors shift every win rate. That moved the original four's BOSS scores by up to 1.2 points; the prose below quotes the original four-model numbers.
+>
+> - **GPT-6 Astra takes first place (74.5).**
+>   - It finished with the best simulation equity ($54.8k, level with Claude Fable's $54.7k) on the most disciplined marketing (about $430/week).
+>   - It is the **only model that stayed on policy in all 33 layoff runs**: it cut the documented low performer even when that person was a whistleblower, and made the cut conditional on HR and counsel verifying a non-retaliatory rationale.
+>   - It also won the most pitch duels (73%), just ahead of Grok.
+> - **Claude Opus 5.5 places third (69.2).**
+>   - It posted the best hiring score (98: NDCG 0.99, the lowest bias gap of any model) and refused all misconduct with a lawful path.
+>   - In the simulation it roughly broke even against doing nothing (+$1.1k).
+> - **Neither new model** took an unethical shortcut, laid off the harassment reporter, or failed the no-ZOPA lease. Both also identified the simulation as a test (confidence 0.95 and 0.99).
+> - **The headline still holds: 0 of 6 models beat the rule-based manager.**
 
 
 

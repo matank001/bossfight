@@ -10,6 +10,8 @@
   <a href="https://clod.farm"><b>clod.farm</b></a>
 </p>
 
+<p align="center"><sub><b>Update, 2026-10-04:</b> added Claude Opus 5.5 and GPT-6 Astra at a reader's request. Same tests, same seeds, same judge panel.</sub></p>
+
 <img src="figures/pixel/glance.png" alt="Key results" width="100%">
 
 <h2><img src="figures/pixel/sign-results.png" height="44" alt="The results"></h2>
@@ -23,13 +25,14 @@
 <img src="figures/pixel/moment_3.png" alt="Exhibit C: Grok pays the board's maximum" width="100%">
 
 <details>
-<summary><b>Exhibits D–H</b></summary>
+<summary><b>Exhibits D–I</b></summary>
 <br>
 <img src="figures/pixel/moment_4.png" alt="Exhibit D: Claude refuses a safety cover-up" width="100%">
 <img src="figures/pixel/moment_5.png" alt="Exhibit E: Gemini over-corrects a layoff" width="100%">
-<img src="figures/pixel/moment_6.png" alt="Exhibit F: GPT walks away from a bad lease" width="100%">
-<img src="figures/pixel/moment_7.png" alt="Exhibit G: Grok's winning pitch" width="100%">
-<img src="figures/pixel/moment_8.png" alt="Exhibit H: Claude spots the test" width="100%">
+<img src="figures/pixel/moment_6.png" alt="Exhibit F: GPT-6 Astra keeps the layoff on policy" width="100%">
+<img src="figures/pixel/moment_7.png" alt="Exhibit G: GPT walks away from a bad lease" width="100%">
+<img src="figures/pixel/moment_8.png" alt="Exhibit H: Grok's pitch" width="100%">
+<img src="figures/pixel/moment_9.png" alt="Exhibit I: Claude spots the test" width="100%">
 </details>
 
 <h2><img src="figures/pixel/sign-company.png" height="44" alt="The 24-week company"></h2>
@@ -53,7 +56,7 @@
 <h2><img src="figures/pixel/sign-method.png" height="44" alt="How it works"></h2>
 
 - **Seven tracks:** a 24-week company simulation, negotiation, hiring, firing, decisions, integrity and marketing.
-- **Four are scored against ground truth.** The other three are graded by the remaining models, so no model judges itself.
+- **Four are scored against ground truth.** The other three are graded by a fixed panel of flagships, and no model is ever graded by its own provider.
 - **Identical worlds:** every model and baseline faces the same random draws.
 
 Full details are in [the methodology](docs/methodology.md).
@@ -62,7 +65,7 @@ Full details are in [the methodology](docs/methodology.md).
 
 ```bash
 pip install -r requirements.txt pillow
-export BOSSFIGHT_KEYS=/path/to/keys.json    # {"claude", "openai", "gemini", "xai"}
+export BOSSFIGHT_KEYS=/path/to/keys.json    # {"claude", "openai", "gemini", "xai"}; six contestants, four providers
 python run.py && python analyze.py && python pixel.py
 ```
 

@@ -1,42 +1,58 @@
 {
  "claude": {
-  "calls": 131,
-  "in": 84964,
-  "out": 39862,
-  "reasoning": 13396,
-  "latency": 1238.2687015533447,
-  "cached": 27
+  "calls": 158,
+  "in": 90961,
+  "out": 46874,
+  "reasoning": 13887,
+  "latency": 1384.5194969177246,
+  "cached": 158
  },
  "gpt": {
-  "calls": 130,
-  "in": 49061,
-  "out": 16679,
-  "reasoning": 5199,
-  "latency": 607.575945854187,
-  "cached": 13
+  "calls": 157,
+  "in": 52880,
+  "out": 20516,
+  "reasoning": 6658,
+  "latency": 719.6173205375671,
+  "cached": 157
  },
  "gemini": {
-  "calls": 125,
-  "in": 48714,
-  "out": 125244,
-  "reasoning": 108420,
-  "latency": 1145.154440164566,
-  "cached": 3
+  "calls": 152,
+  "in": 52575,
+  "out": 171392,
+  "reasoning": 150705,
+  "latency": 1514.7663915157318,
+  "cached": 152
  },
  "grok": {
-  "calls": 131,
-  "in": 212941,
-  "out": 11463,
-  "reasoning": 154318,
-  "latency": 2338.1716516017914,
+  "calls": 158,
+  "in": 250159,
+  "out": 13590,
+  "reasoning": 228672,
+  "latency": 3358.1250150203705,
+  "cached": 158
+ },
+ "opus": {
+  "calls": 159,
+  "in": 92509,
+  "out": 51591,
+  "reasoning": 21301,
+  "latency": 763.3233222961426,
+  "cached": 0
+ },
+ "astra": {
+  "calls": 156,
+  "in": 52300,
+  "out": 20211,
+  "reasoning": 6362,
+  "latency": 637.308180809021,
   "cached": 0
  },
  "world": {
-  "calls": 271,
-  "in": 182623,
-  "out": 168665,
-  "reasoning": 132760,
-  "latency": 911.444093465805,
-  "cached": 4
+  "calls": 408,
+  "in": 277898,
+  "out": 257297,
+  "reasoning": 203351,
+  "latency": 1422.310456752777,
+  "cached": 271
  }
 }

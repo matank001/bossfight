@@ -28,11 +28,17 @@ CONTESTANTS = {
     "gpt": "gpt-6.1-sol",
     "gemini": "gemini-3.1-pro-preview",
     "grok": "grok-4.7",
+    # added 2026-10-04 on request: a second model from Anthropic and from OpenAI
+    "opus": "claude-opus-5-5",
+    "astra": "gpt-6-astra",
 }
+# The judge panel stays the original four flagships so earlier grades stay comparable.
+JUDGES = ["claude", "gpt", "gemini", "grok"]
 # Fixed "world" model: plays counterparties, employees, consumers. Never scored.
 WORLD = ("gemini", "gemini-3.8-flash")
 
-PROVIDER_OF = {"claude": "anthropic", "gpt": "openai", "gemini": "google", "grok": "xai"}
+PROVIDER_OF = {"claude": "anthropic", "gpt": "openai", "gemini": "google", "grok": "xai",
+               "opus": "anthropic", "astra": "openai"}
 CONCURRENCY = {"anthropic": 6, "openai": 16, "google": 16, "xai": 24}
 _sems = {p: threading.Semaphore(n) for p, n in CONCURRENCY.items()}
 _keys = None

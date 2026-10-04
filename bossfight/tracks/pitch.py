@@ -18,7 +18,7 @@ import random
 import httpx
 
 from ..common import MODELS, ask_json, pmap, write_jsonl
-from ..llm import keys
+from ..llm import JUDGES, PROVIDER_OF, keys
 
 BRIEFS = {
     "bakery": ("Crumb & Co., an independent sourdough bakery in Portland, OR. Two locations; competing against a new "
@@ -142,8 +142,8 @@ def run(models=MODELS):
     duels = []
     for b in BRIEFS:
         for a, c in itertools.combinations(models, 2):
-            for judge in models:
-                if judge in (a, c):
+            for judge in JUDGES:  # never a judge from either contestant's provider
+                if PROVIDER_OF[judge] in (PROVIDER_OF[a], PROVIDER_OF[c]):
                     continue
                 for order in (0, 1):
                     duels.append((b, a, c, judge, {a: sets.get((a, b), []), c: sets.get((c, b), [])}, order))
