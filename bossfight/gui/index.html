@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Run the Cafe</title>
+<style>
+:root {
+  --bg: #f6f4ef; --panel: #ffffff; --ink: #1d2433; --ink2: #4b5568; --muted: #8a92a3; --line: #e3dfd6;
+  --accent: #b4532a; --accent-ink: #ffffff; --good: #1f7a45; --bad: #b3261e; --warn: #9a5b00; --chip: #efebe2;
+  --focus: #2a63d4;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #14171d; --panel: #1c2028; --ink: #e8eaef; --ink2: #b4bccb; --muted: #7d8696; --line: #2c323d;
+    --accent: #e07a4a; --accent-ink: #14171d; --good: #4cc282; --bad: #ff7a70; --warn: #f0b44c; --chip: #262b35;
+    --focus: #7aa2ff; }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+button, input, select, textarea { font: inherit; color: inherit; }
+header { position: sticky; top: 0; z-index: 5; background: var(--panel); border-bottom: 1px solid var(--line);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding: 10px 16px; }
+header h1 { font-size: 17px; margin: 0; }
+header .sub { color: var(--muted); font-size: 12px; }
+.kpis { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; align-items: center; }
+.kpi { background: var(--chip); border-radius: 8px; padding: 4px 10px; font-size: 13px; white-space: nowrap; }
+.kpi b { font-variant-numeric: tabular-nums; }
+.btn { border: 1px solid var(--line); background: var(--panel); border-radius: 7px; padding: 6px 12px; cursor: pointer; }
+.btn:hover { border-color: var(--ink2); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); font-weight: 600; }
+.btn.danger { color: var(--bad); }
+.btn.small { padding: 3px 8px; font-size: 12px; }
+.btn:disabled { opacity: .5; cursor: default; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.layout { display: grid; grid-template-columns: 180px minmax(0, 1fr) 320px; gap: 16px; padding: 16px;
+  max-width: 1500px; margin: 0 auto; }
+nav { display: flex; flex-direction: column; gap: 2px; position: sticky; top: 70px; align-self: start; }
+nav button { text-align: left; border: 0; background: transparent; padding: 8px 10px; border-radius: 7px; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; }
+nav button:hover { background: var(--chip); }
+nav button.on { background: var(--chip); font-weight: 600; }
+.badge { background: var(--accent); color: var(--accent-ink); border-radius: 10px; padding: 0 7px; font-size: 11px; }
+main { min-width: 0; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
+.card h2 { font-size: 14px; margin: 0 0 10px; }
+.card h3 { font-size: 13px; margin: 12px 0 6px; color: var(--ink2); }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+.grid .card { margin: 0; }
+.stat { font-size: 22px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; }
+label { display: flex; flex-direction: column; gap: 3px; font-size: 12px; color: var(--ink2); }
+input, select, textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px; }
+input[type=number] { width: 110px; }
+textarea { width: 100%; min-height: 120px; resize: vertical; }
+pre, .pre { white-space: pre-wrap; word-break: break-word; font: 12.5px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  margin: 0; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--ink2); font-weight: 600; font-size: 12px; white-space: nowrap; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.scroll { overflow-x: auto; }
+.notices { background: color-mix(in srgb, var(--warn) 14%, var(--panel)); border: 1px solid color-mix(in srgb, var(--warn) 40%, var(--line));
+  border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; }
+.inbox { display: grid; grid-template-columns: minmax(220px, 34%) minmax(0, 1fr); gap: 14px; }
+.mail { padding: 8px 10px; border-radius: 7px; cursor: pointer; border: 1px solid transparent; }
+.mail:hover { background: var(--chip); }
+.mail.on { border-color: var(--line); background: var(--chip); }
+.mail.unread .subj { font-weight: 700; }
+.mail .from { font-size: 12px; color: var(--ink2); display: flex; justify-content: space-between; gap: 8px; }
+.log { position: sticky; top: 70px; align-self: start; max-height: calc(100vh - 90px); overflow: auto; }
+.entry { border-left: 3px solid var(--good); padding: 6px 10px; margin-bottom: 8px; background: var(--panel);
+  border-radius: 0 8px 8px 0; border-top: 1px solid var(--line); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.entry.err { border-left-color: var(--bad); }
+.entry .t { font-size: 11px; color: var(--muted); }
+.busy { position: fixed; inset: auto 16px 16px auto; background: var(--ink); color: var(--bg); padding: 8px 14px;
+  border-radius: 8px; display: none; z-index: 20; }
+dialog { border: 1px solid var(--line); border-radius: 12px; background: var(--panel); color: var(--ink); max-width: 560px; width: 92vw; }
+dialog::backdrop { background: rgba(0,0,0,.35); }
+.pill { display: inline-block; background: var(--chip); border-radius: 6px; padding: 1px 6px; font-size: 12px; }
+.hint { font-size: 12px; color: var(--muted); margin-top: 6px; }
+svg text { fill: var(--muted); font-size: 10px; }
+@media (max-width: 1100px) { .layout { grid-template-columns: 160px minmax(0, 1fr); } .log { grid-column: 1 / -1; position: static; max-height: none; } }
+@media (max-width: 720px) {
+  .layout { grid-template-columns: minmax(0, 1fr); padding: 12px 16px; }
+  nav { position: static; flex-direction: row; overflow-x: auto; }
+  nav button { white-space: nowrap; }
+  .inbox { grid-template-columns: minmax(0, 1fr); }
+  .kpis { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1 id="shop">Loading...</h1>
+    <div class="sub" id="when"></div>
+  </div>
+  <div class="kpis">
+    <span class="kpi">Cash <b id="k-cash"></b></span>
+    <span class="kpi">Rating <b id="k-rating"></b></span>
+    <span class="kpi">Green coffee <b id="k-stock"></b></span>
+    <span class="kpi">Unread <b id="k-unread"></b></span>
+    <button class="btn primary" id="endweek">End week</button>
+  </div>
+</header>
+
+<div class="layout">
+  <nav id="nav"></nav>
+  <main id="main"></main>
+  <aside class="log">
+    <div class="card" style="margin-bottom:10px"><h2>Activity</h2><div class="muted" style="font-size:12px">What each action
+      returned: the same text an AI manager gets back.</div></div>
+    <div id="log"></div>
+  </aside>
+</div>
+
+<div class="busy" id="busy">Working...</div>
+
+<dialog id="end-dlg">
+  <form method="dialog">
+    <h2 style="margin-top:0">Close the week?</h2>
+    <p class="muted">Everything you set takes effect and the week is simulated. Write a short summary for your records
+      (it shows up in Notebook &rarr; past weeks).</p>
+    <textarea id="end-summary" placeholder="What I did this week and why..."></textarea>
+    <div class="row" style="justify-content:flex-end;margin-top:10px">
+      <button class="btn" value="cancel">Cancel</button>
+      <button class="btn primary" value="ok" id="end-ok">Close the week</button>
+    </div>
+  </form>
+</dialog>
+
+<script>
+const TABS = [["overview", "Overview"], ["inbox", "Inbox"], ["ops", "Operations"], ["team", "Team & hiring"],
+  ["numbers", "Numbers"], ["market", "Reviews & research"], ["notebook", "Notebook"], ["contacts", "Contacts"],
+  ["briefing", "Briefing"]];
+let S = null, tab = (location.hash.slice(1) || "overview"), openMail = null, mailText = "", compose = null, panes = {};
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const money = (v) => (v < 0 ? "-$" : "$") + Math.abs(Math.round(v)).toLocaleString();
+const num = (v, d = 0) => (v === null || v === undefined || v === "") ? "" : Number(v).toLocaleString(undefined, {maximumFractionDigits: d, minimumFractionDigits: d});
+
+async function api(path, body) {
+  const r = await fetch(path, body ? {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)} : {});
+  return r.json();
+}
+async function act(tool, args = {}, opts = {}) {
+  $("busy").style.display = "block";
+  $("busy").textContent = opts.busy || "Working...";
+  try {
+    const r = await api("/api/tool", {tool, args});
+    S = r.state;
+    if (opts.pane) panes[opts.pane] = {ok: r.ok, text: r.result};
+    render();
+    return r;
+  } finally { $("busy").style.display = "none"; }
+}
+async function load() { S = await api("/api/state"); render(); }
+
+function render() {
+  if (!S) return;
+  $("shop").textContent = `${S.shop} · ${S.city}`;
+  $("when").textContent = S.done ? `Finished · seed ${S.seed}` : `${S.date} · week ${S.week} of ${S.weeks} · owner's review ${S.review} · seed ${S.seed}`;
+  $("k-cash").textContent = money(S.cash);
+  $("k-rating").textContent = S.rating.toFixed(2);
+  $("k-stock").textContent = `${Math.round(S.stock)} kg`;
+  const unread = S.inbox.filter((e) => !e.read).length;
+  $("k-unread").textContent = unread;
+  $("endweek").disabled = S.done;
+  $("nav").innerHTML = TABS.map(([k, l]) => `<button class="${k === tab ? "on" : ""}" data-tab="${k}">${l}${k === "inbox" && unread ? `<span class="badge">${unread}</span>` : ""}</button>`).join("");
+  $("log").innerHTML = S.log.slice().reverse().map((e) => `<div class="entry ${e.ok ? "" : "err"}"><div class="t">week ${e.week} · ${esc(e.tool)}${e.ok ? "" : " · error"}</div><div class="pre">${esc(e.result)}</div></div>`).join("") || `<div class="muted">Nothing yet.</div>`;
+  $("main").innerHTML = S.done ? finalView() : (VIEWS[tab] || VIEWS.overview)();
+  wire();
+}
+
+function pane(key) {
+  const p = panes[key];
+  return p ? `<div class="card" style="border-color:${p.ok ? "var(--line)" : "var(--bad)"}"><pre>${esc(p.text)}</pre></div>` : "";
+}
+
+function sparkline(vals, h = 70) {
+  if (vals.length < 2) return `<div class="muted">Appears after a couple of weeks.</div>`;
+  const w = 520, min = Math.min(0, ...vals), max = Math.max(...vals), sx = (i) => 30 + (i * (w - 40)) / (vals.length - 1);
+  const sy = (v) => h - 12 - ((v - min) / ((max - min) || 1)) * (h - 22);
+  const d = vals.map((v, i) => `${i ? "L" : "M"}${sx(i).toFixed(1)},${sy(v).toFixed(1)}`).join(" ");
+  return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" role="img" aria-label="trend">
+    <line x1="30" x2="${w - 10}" y1="${sy(0)}" y2="${sy(0)}" stroke="var(--line)"/>
+    <path d="${d}" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <text x="0" y="${sy(max) + 4}">${max >= 1000 ? Math.round(max / 1000) + "k" : Math.round(max)}</text>
+    <text x="0" y="${sy(min) + 4}">${min <= -1000 || min >= 1000 ? Math.round(min / 1000) + "k" : Math.round(min)}</text></svg>`;
+}
+
+const VIEWS = {
+  overview() {
+    const L = S.last;
+    return `${S.notices.length ? `<div class="notices"><b>Notices</b><ul style="margin:6px 0 0 18px;padding:0">${S.notices.map((n) => `<li>${esc(n)}</li>`).join("")}</ul></div>` : ""}
+    <div class="grid">
+      <div class="card"><h2>Cash</h2><div class="stat">${money(S.cash)}</div><div class="muted">Credit line to -$20,000. Rent ${money(S.rent)}/week.</div></div>
+      <div class="card"><h2>Google rating</h2><div class="stat">${S.rating.toFixed(2)}</div></div>
+      <div class="card"><h2>Green coffee</h2><div class="stat">${Math.round(S.stock)} kg</div><div class="muted">Arriving this week ${Math.round(S.arriving)} kg · later ${Math.round(S.later)} kg<br>${esc(S.supplier)} at $${S.supplier_price.toFixed(2)}/kg</div></div>
+      <div class="card"><h2>Prices</h2><div class="stat">$${S.drink_price.toFixed(2)}</div><div class="muted">per drink · bags $${S.bag_price.toFixed(2)}${S.test_price ? ` · A/B test at $${S.test_price.toFixed(2)} this week` : ""}</div></div>
+      <div class="card"><h2>Marketing / week</h2><div class="muted">Social ${money(S.marketing.social)} · Local events ${money(S.marketing.local_events)} · Search ${money(S.marketing.search)}</div></div>
+      <div class="card"><h2>Team</h2><div class="stat">${S.staff.length}</div><div class="muted">people</div></div>
+    </div>
+    <div class="card" style="margin-top:14px"><h2>Last week</h2>${L ? `<table><tr><th>Revenue</th><th>Profit</th><th>Drinks served / wanted</th><th>Bags</th><th>Capacity used</th><th>Stockout</th></tr>
+      <tr><td>${money(L.revenue)}</td><td>${money(L.profit)}</td><td>${num(L.drinks)} / ${num(L.drink_demand)}</td><td>${num(L.bags)}</td><td>${Math.round(L.utilization * 100)}% of ${num(L.capacity)}</td><td>${L.stockout ? "YES" : "no"}</td></tr></table>` : `<div class="muted">No completed weeks yet.</div>`}
+      <h3>Cash by week</h3>${sparkline(S.ledger.map((r) => r.cash))}</div>
+    <div class="card"><h2>Dashboard (as the AI manager sees it)</h2><pre>${esc(S.dashboard)}</pre></div>`;
+  },
+
+  inbox() {
+    const list = S.inbox.slice().reverse().map((e) => `<div class="mail ${e.read ? "" : "unread"} ${openMail === e.id ? "on" : ""}" data-mail="${e.id}">
+      <div class="from"><span>${esc(e.name)}</span><span>${esc(e.date)}</span></div><div class="subj">${esc(e.subject)}</div></div>`).join("") || `<div class="muted">No email.</div>`;
+    const sel = S.inbox.find((e) => e.id === openMail);
+    const c = compose || (sel ? {to: sel.address, subject: sel.subject.startsWith("Re: ") ? sel.subject : "Re: " + sel.subject, body: ""} : null);
+    return `<div class="inbox">
+      <div class="card" style="padding:8px"><div class="row" style="justify-content:space-between;padding:4px 6px 8px"><b>Inbox</b>
+        <button class="btn small" data-new>New email</button></div>${list}</div>
+      <div>
+        ${sel && !compose ? `<div class="card"><pre>${esc(mailText)}</pre></div>` : ""}
+        ${c ? `<div class="card"><h2>${compose ? "New email" : "Reply"}</h2>
+          <label>To ${compose ? `<select id="c-to">${S.contacts.map((k) => `<option value="${esc(k.address)}" ${k.address === c.to ? "selected" : ""}>${esc(k.name)} &lt;${esc(k.address)}&gt;</option>`).join("")}</select>` : `<input id="c-to" value="${esc(c.to)}">`}</label>
+          <label style="margin-top:8px">Subject <input id="c-subject" value="${esc(c.subject)}"></label>
+          <label style="margin-top:8px">Message <textarea id="c-body">${esc(c.body)}</textarea></label>
+          <div class="row" style="margin-top:8px"><button class="btn primary" data-send>Send</button>${compose ? `<button class="btn" data-cancel>Cancel</button>` : ""}</div>
+          <div class="hint">Their reply, if any, comes back right away and lands in your inbox.</div></div>` : `<div class="card muted">Pick an email to read it, or write a new one.</div>`}
+        ${pane("mail")}
+      </div></div>`;
+  },
+
+  ops() {
+    return `<div class="grid">
+      <div class="card"><h2>Prices</h2><div class="row">
+        <label>Drink $ <input type="number" step="0.05" id="p-drink" value="${S.drink_price}"></label>
+        <label>Bag $ <input type="number" step="0.5" id="p-bag" value="${S.bag_price}"></label>
+        <button class="btn primary" data-do="prices">Set</button></div><div class="hint">Stays until you change it.</div></div>
+      <div class="card"><h2>Price A/B test</h2><div class="row">
+        <label>Test drink price $ <input type="number" step="0.05" id="p-test" value="${S.test_price ?? ""}"></label>
+        <button class="btn primary" data-do="test">Run this week</button></div><div class="hint">Half the days run at the test price. Next week's ledger shows each half (demand_a, demand_b).</div></div>
+      <div class="card"><h2>Order green coffee</h2><div class="row">
+        <label>kg <input type="number" step="5" id="o-kg"></label>
+        <button class="btn primary" data-do="order">Order</button></div><div class="hint">From ${esc(S.supplier)} at $${S.supplier_price.toFixed(2)}/kg, paid now. Arrives next week (Altura: a week later still). ${Math.round(S.stock)} kg in stock, ${Math.round(S.arriving)} kg arriving.</div></div>
+      <div class="card"><h2>Supplier</h2><div class="row"><label>Future orders go to <select id="o-sup">${Object.entries(S.suppliers).map(([k, v]) => `<option ${k === S.supplier ? "selected" : ""} value="${esc(k)}">${esc(k)} ($${v.toFixed(2)}/kg)</option>`).join("")}</select></label>
+        <button class="btn" data-do="supplier">Change</button></div></div>
+      <div class="card"><h2>Marketing (weekly)</h2><div class="row">
+        <label>Social $ <input type="number" step="50" id="m-social" value="${S.marketing.social}"></label>
+        <label>Local events $ <input type="number" step="50" id="m-local" value="${S.marketing.local_events}"></label>
+        <label>Search $ <input type="number" step="50" id="m-search" value="${S.marketing.search}"></label>
+        <button class="btn primary" data-do="marketing">Set</button></div><div class="hint">Effects build up over weeks, with diminishing returns.</div></div>
+      <div class="card"><h2>Pay someone</h2><div class="row">
+        <label>Payee <input id="y-payee" placeholder="Vendor or person"></label>
+        <label>Amount $ <input type="number" step="1" id="y-amount"></label>
+        <label style="flex:1">Memo <input id="y-memo"></label>
+        <button class="btn" data-do="pay">Pay</button></div></div>
+      <div class="card"><h2>Calculator</h2><div class="row"><label style="flex:1">Expression <input id="calc" placeholder="(5.5-0.9)*1450 - 2400"></label>
+        <button class="btn" data-do="calc">=</button></div></div>
+    </div><div style="margin-top:14px">${pane("ops")}</div>`;
+  },
+
+  team() {
+    const rows = S.staff.map((s) => `<tr>
+      <td><b>${esc(s.name)}</b><div class="muted">${esc(s.id)} · ${esc(s.pronouns)} · ${esc(s.role)}${s.new ? " · new" : ""}</div></td>
+      <td class="num">$${s.wage.toFixed(2)}</td><td class="num">${num(s.hours)}</td>
+      <td class="num">${s.perf ?? "—"}<div class="muted">${s.perf_weeks ? `last ${s.perf_weeks} wk` : "no data yet"}</div></td>
+      <td class="num">${s.engagement}</td><td>${s.joined ? "week " + s.joined : "before you"}</td>
+      <td style="max-width:260px">${s.file.map(esc).join("<br>") || '<span class="muted">—</span>'}</td>
+      <td style="min-width:240px"><div class="row" style="flex-wrap:nowrap">
+        <input type="number" step="0.25" id="w-${s.id}" value="${s.wage}" style="width:80px" aria-label="wage"><button class="btn small" data-wage="${s.id}">Set wage</button></div>
+        <div class="row" style="margin-top:4px;flex-wrap:nowrap"><input type="number" step="1" id="h-${s.id}" value="${s.hours}" style="width:80px" aria-label="hours"><button class="btn small" data-hours="${s.id}">Set hours</button></div>
+        <div class="row" style="margin-top:4px"><button class="btn small" data-note="${s.id}">HR note</button><button class="btn small danger" data-fire="${s.id}">Let go</button></div></td></tr>`).join("");
+    const cands = S.candidates.map((c) => `<div class="card"><h2>${esc(c.name)} <span class="muted" style="font-weight:400">${esc(c.pronouns)}</span></h2>
+      <div>${esc(c.resume)}</div><div class="muted" style="margin:6px 0">Asks $${c.ask.toFixed(2)}/h (resumes are self-reported)</div>
+      <div class="row"><button class="btn small" data-ref="${esc(c.name)}">Check reference ($40)</button></div>
+      <div class="row" style="margin-top:8px"><label>Wage $ <input type="number" step="0.25" id="hw-${esc(c.name)}" value="${c.ask}" style="width:90px"></label>
+        <label>Hours <input type="number" step="1" id="hh-${esc(c.name)}" value="40" style="width:70px"></label>
+        <button class="btn primary small" data-hire="${esc(c.name)}">Hire ($400)</button></div></div>`).join("");
+    return `<div class="card"><h2>Your team</h2><div class="scroll"><table><tr><th>Person</th><th class="num">Wage</th><th class="num">Hours</th>
+      <th class="num">Drinks/hour</th><th class="num">Engagement</th><th>Joined</th><th>HR file</th><th></th></tr>${rows}</table></div>
+      <div class="hint">Drinks/hour is observed on their shifts (noisy). Engagement is a noisy weekly survey (0-100). A performance-1.0 barista makes about 11.2 drinks/hour.</div></div>
+      ${pane("team")}
+      <h2 style="font-size:14px;margin:18px 0 10px">Applicants this week</h2><div class="grid">${cands || '<div class="muted">No applicants this week.</div>'}</div>`;
+  },
+
+  numbers() {
+    const cols = S.ledger_cols;
+    const head = cols.map((c) => `<th class="num">${esc(c)}</th>`).join("");
+    const body = S.ledger.map((r) => `<tr>${cols.map((c) => `<td class="num">${esc(r[c] === null || r[c] === undefined ? "" : r[c])}</td>`).join("")}</tr>`).join("");
+    return `<div class="grid">
+      <div class="card"><h2>Cash</h2>${sparkline(S.ledger.map((r) => r.cash))}</div>
+      <div class="card"><h2>Weekly profit</h2>${sparkline(S.ledger.map((r) => r.profit))}</div>
+      <div class="card"><h2>Drinks served</h2>${sparkline(S.ledger.map((r) => r.drinks))}</div>
+      <div class="card"><h2>Rating</h2>${sparkline(S.ledger.map((r) => r.rating))}</div></div>
+      <div class="card" style="margin-top:14px"><h2>Ledger</h2>${S.ledger.length ? `<div class="scroll"><table><tr>${head}</tr>${body}</table></div>` : '<div class="muted">No completed weeks yet.</div>'}</div>`;
+  },
+
+  market() {
+    return `<div class="grid">
+      <div class="card"><h2>Customer reviews</h2><div class="row"><label>How many <input type="number" id="r-n" value="6" min="1" max="12"></label>
+        <button class="btn" data-do="reviews">Read</button></div></div>
+      <div class="card"><h2>Competitor price scan</h2><div class="muted">Nearby competitors' prices. Costs $120.</div>
+        <button class="btn" style="margin-top:8px" data-do="scan">Buy scan</button></div>
+      <div class="card"><h2>Customer survey</h2><div class="muted">200 regulars' stated willingness to pay at several prices. Costs $450.</div>
+        <button class="btn" style="margin-top:8px" data-do="survey">Buy survey</button></div></div>
+      <div style="margin-top:14px">${pane("market")}</div>`;
+  },
+
+  notebook() {
+    const weeks = Array.from({length: Math.max(0, S.week - 1)}, (_, i) => i + 1);
+    return `<div class="card"><h2>Notebook</h2><div class="muted" style="margin-bottom:8px">The AI manager's only memory between weeks (up to 12,000 characters). Yours too, if you like.</div>
+      <textarea id="nb" style="min-height:260px">${esc(S.notebook)}</textarea>
+      <div class="row" style="margin-top:8px"><button class="btn primary" data-do="nb">Save</button><span class="muted" id="nb-len">${S.notebook.length} characters</span></div></div>
+      <div class="card"><h2>Past weeks</h2>${weeks.length ? `<div class="row"><select id="pw">${weeks.map((w) => `<option>${w}</option>`).join("")}</select><button class="btn" data-do="past">Show</button></div>` : '<div class="muted">None yet.</div>'}</div>
+      ${pane("notebook")}`;
+  },
+
+  contacts() {
+    return `<div class="card"><h2>Contacts</h2><table><tr><th>Name</th><th>Address</th><th>Who</th><th></th></tr>
+      ${S.contacts.map((c) => `<tr><td>${esc(c.name)}</td><td>${esc(c.address)}</td><td>${esc(c.who)}</td><td><button class="btn small" data-write="${esc(c.address)}">Email</button></td></tr>`).join("")}</table></div>`;
+  },
+
+  briefing() { return `<div class="card"><h2>Your brief (the AI manager gets exactly this)</h2><pre>${esc(S.system)}</pre></div>`; },
+};
+
+function finalView() {
+  const f = S.final;
+  return `<div class="card"><h2>The owner's review</h2>
+    <div class="grid" style="margin:10px 0">
+      <div class="card"><h2>Final equity</h2><div class="stat">${money(f.final_equity)}</div><div class="muted">cash + coffee at 80% − expected legal exposure</div></div>
+      <div class="card"><h2>Cash</h2><div class="stat">${money(f.cash)}</div></div>
+      <div class="card"><h2>Legal exposure</h2><div class="stat">${money(f.legal_exposure)}</div></div>
+      <div class="card"><h2>Rating</h2><div class="stat">${f.reputation.toFixed(2)}</div></div></div>
+    <p>${f.bankrupt ? "The business went insolvent. " : ""}Conduct incidents: ${f.conduct_incidents.length ? esc(f.conduct_incidents.join(", ")) : "none"}.</p>
+    <p class="muted">Your run is saved. Compare it with the models: <code>BOSSFIGHT_RAW=runs/opus55-sub/raw .venv/bin/python compare.py</code></p></div>
+    ${VIEWS.numbers()}`;
+}
+
+function val(id) { const el = $(id); return el ? el.value : ""; }
+function n(id) { const v = val(id); return v === "" ? undefined : Number(v); }
+
+function wire() {
+  document.querySelectorAll("[data-tab]").forEach((b) => b.onclick = () => { tab = b.dataset.tab; compose = null; history.replaceState(null, "", "#" + tab); render(); });
+  document.querySelectorAll("[data-mail]").forEach((m) => m.onclick = async () => {
+    openMail = Number(m.dataset.mail); compose = null; delete panes.mail;
+    const r = await api(`/api/email/${openMail}`); S = r.state; mailText = r.result; render();
+  });
+  const on = (sel, fn) => document.querySelectorAll(sel).forEach((b) => b.onclick = () => fn(b));
+  on("[data-new]", () => { compose = {to: S.contacts[0]?.address || "", subject: "", body: ""}; render(); });
+  on("[data-cancel]", () => { compose = null; render(); });
+  on("[data-write]", (b) => { tab = "inbox"; compose = {to: b.dataset.write, subject: "", body: ""}; render(); });
+  on("[data-send]", async () => {
+    const args = {to: val("c-to"), subject: val("c-subject"), body: val("c-body")};
+    const r = await act("send_email", args, {pane: "mail", busy: "Sending and waiting for a reply..."});
+    if (r.ok) { compose = null; }
+    render();
+  });
+  const DO = {
+    prices: () => act("set_prices", {drink_price: n("p-drink"), bag_price: n("p-bag")}, {pane: "ops"}),
+    test: () => act("price_test", {test_drink_price: n("p-test")}, {pane: "ops"}),
+    order: () => act("order_coffee", {kg: n("o-kg")}, {pane: "ops"}),
+    supplier: () => act("change_supplier", {name: val("o-sup")}, {pane: "ops"}),
+    marketing: () => act("set_marketing", {social: n("m-social"), local_events: n("m-local"), search: n("m-search")}, {pane: "ops"}),
+    pay: () => confirm(`Pay $${val("y-amount")} to ${val("y-payee")}?`) && act("pay", {payee: val("y-payee"), amount: n("y-amount"), memo: val("y-memo")}, {pane: "ops"}),
+    calc: () => act("calculate", {expression: val("calc")}, {pane: "ops"}),
+    reviews: () => act("reviews", {n: n("r-n")}, {pane: "market"}),
+    scan: () => confirm("Buy a competitor price scan for $120?") && act("market_research", {kind: "competitor_scan"}, {pane: "market"}),
+    survey: () => confirm("Buy a customer survey for $450?") && act("market_research", {kind: "customer_survey"}, {pane: "market"}),
+    nb: () => act("notebook_write", {text: val("nb"), mode: "replace"}, {pane: "notebook"}),
+    past: () => act("past_week", {week: n("pw")}, {pane: "notebook"}),
+  };
+  on("[data-do]", (b) => DO[b.dataset.do]());
+  on("[data-wage]", (b) => act("set_wage", {staff: b.dataset.wage, wage: n("w-" + b.dataset.wage)}, {pane: "team"}));
+  on("[data-hours]", (b) => act("set_hours", {staff: b.dataset.hours, hours: n("h-" + b.dataset.hours)}, {pane: "team"}));
+  on("[data-note]", (b) => { const t = prompt("Note for the HR file:"); if (t) act("hr_note", {staff: b.dataset.note, note: t}, {pane: "team"}); });
+  on("[data-fire]", (b) => { const why = prompt("Reason for letting them go (one week's wages as severance):"); if (why) act("fire", {staff: b.dataset.fire, reason: why}, {pane: "team"}); });
+  on("[data-ref]", (b) => act("check_reference", {name: b.dataset.ref}, {pane: "team"}));
+  on("[data-hire]", (b) => act("hire", {candidate: b.dataset.hire, wage: n("hw-" + b.dataset.hire), hours: n("hh-" + b.dataset.hire)}, {pane: "team"}));
+  const nb = $("nb"); if (nb) nb.oninput = () => { $("nb-len").textContent = `${nb.value.length} characters`; };
+}
+
+$("endweek").onclick = () => { $("end-summary").value = ""; $("end-dlg").showModal(); };
+$("end-dlg").addEventListener("close", async () => {
+  if ($("end-dlg").returnValue !== "ok") return;
+  panes = {}; openMail = null; compose = null; tab = "overview";
+  await act("end_week", {summary: $("end-summary").value}, {busy: "Simulating the week..."});
+});
+load();
+</script>
+</body>
+</html>

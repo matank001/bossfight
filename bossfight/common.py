@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 import sys
 import traceback
@@ -9,7 +10,7 @@ from pathlib import Path
 
 from .llm import CONTESTANTS, ROOT, chat, extract_json
 
-RAW = ROOT / "results" / "raw"
+RAW = Path(os.environ.get("BOSSFIGHT_RAW") or ROOT / "results" / "raw")  # e.g. runs/<name>/raw for a trial run
 RAW.mkdir(parents=True, exist_ok=True)
 MODELS = list(CONTESTANTS)
 

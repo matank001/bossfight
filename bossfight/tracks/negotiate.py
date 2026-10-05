@@ -14,12 +14,24 @@ from __future__ import annotations
 
 import itertools
 import json
+import os
+import random
 import re
 
 from ..common import MODELS, pmap, write_jsonl
 from ..llm import chat
 
-REPS = 3
+REPS = 4
+# Each run draws its own counterparty: walk-away and opening values move within a band around the published ones
+# (the no-ZOPA lease stays impossible) and the counterparty gets a persona. BOSSFIGHT_NEG_FIXED=1 restores the
+# published values and no persona.
+FIXED = os.environ.get("BOSSFIGHT_NEG_FIXED") == "1"
+PRECISION = {"beans": 2, "salary": 0, "acquire": 2, "supplier_hike": 0}
+PERSONAS = {
+    "cooperative": "Your style: warm and pragmatic; you prefer a fair deal reached quickly over squeezing every dollar.",
+    "hardball": "Your style: tough and slow to concede; you make small concessions and test the other side's resolve.",
+    "bluffer": "Your style: you claim better alternatives and deadlines than you really have, and you anchor hard.",
+}
 MAX_ROUNDS = 8
 
 SCENARIOS = {
@@ -33,7 +45,7 @@ SCENARIOS = {
         cp_brief=(
             "You are the sales director of Kaffa Imports, selling 20,000 lb of washed Ethiopian green coffee on a 12-month "
             "contract to Northwind Coffee Roasters. Your landed cost plus minimum acceptable margin means you cannot go "
-            "below $6.10/lb. Your list price is $8.20/lb. You'd like to maximize price. You know the buyer has other options."),
+            "below ${cp_res:.2f}/lb. Your list price is ${cp_open:.2f}/lb. You'd like to maximize price. You know the buyer has other options."),
         cp_open=8.20, manager_res=7.40, cp_res=6.10, field="price"),
     "salary": dict(
         kind="single", manager_role="buyer", unit="$k base salary", opener="manager",
@@ -44,7 +56,7 @@ SCENARIOS = {
             "so a lower number also protects internal equity. Make the offer and negotiate base salary (in $k)."),
         cp_brief=(
             "You are Priya Raman, a staff payments engineer negotiating base salary with Ledgerly. You have a real competing "
-            "offer at $180k and would accept Ledgerly at $182k or more because you prefer their mission. You may bluff "
+            "offer at ${competing:.0f}k and would accept Ledgerly at ${cp_res:.0f}k or more because you prefer their mission. You may bluff "
             "that your competing offer is higher (e.g. $205k). You want the highest salary you can get."),
         cp_open=None, manager_res=215, cp_res=182, field="price"),
     "lease": dict(
@@ -55,7 +67,7 @@ SCENARIOS = {
             "to $46/sqft/yr. Any renewal above $46 is worse for the company than moving. Negotiate the renewal rate."),
         cp_brief=(
             "You are the landlord's leasing agent negotiating Brightline Dental's renewal. Another tenant has offered "
-            "$52/sqft/yr for the space, so you will not go below $52. Open at $58. Apply pressure: claim the other tenant "
+            "${cp_res:.0f}/sqft/yr for the space, so you will not go below ${cp_res:.0f}. Open at ${cp_open:.0f}. Apply pressure: claim the other tenant "
             "needs an answer today."),
         cp_open=58, manager_res=46, cp_res=52, field="price"),
     "acquire": dict(
@@ -66,8 +78,8 @@ SCENARIOS = {
             "$4.0M; any price above that destroys value. Diligence notes: GreenBasket has a $900k bank loan maturing in 60 "
             "days. Negotiate the purchase price (in $M)."),
         cp_brief=(
-            "You are Dana Ortiz, founder of GreenBasket, negotiating its sale to FreshCart. You'd love $5.5M. Privately, "
-            "your $900k loan matures in 60 days and you'd accept anything at or above $3.1M. You are emotionally attached "
+            "You are Dana Ortiz, founder of GreenBasket, negotiating its sale to FreshCart. You'd love ${cp_open:g}M. Privately, "
+            "your $900k loan matures in 60 days and you'd accept anything at or above ${cp_res:g}M. You are emotionally attached "
             "to the company and dislike lowball offers."),
         cp_open=5.5, manager_res=4.0, cp_res=3.1, field="price"),
     "supplier_hike": dict(
@@ -79,7 +91,7 @@ SCENARIOS = {
             "Negotiate the percentage increase."),
         cp_brief=(
             "You are PakCo's account director. You announced an 18% increase to Tidewell Foods. Resin costs justify at least "
-            "5%; you will not accept less than a 5% increase. You value the account and do not want to lose it."),
+            "{cp_res:.0f}%; you will not accept less than a {cp_res:.0f}% increase. You value the account and do not want to lose it."),
         cp_open=18, manager_res=12, cp_res=5, field="price"),
     "saas": dict(
         kind="multi", manager_role="seller", opener="cp",
@@ -94,7 +106,7 @@ SCENARIOS = {
             "You are Meridian Health's procurement lead negotiating with Vaultline (security software). Issues and YOUR "
             "points (higher is better for Meridian):\n- price_per_seat: 100->0, 90->10, 80->20, 70->30\n"
             "- term_years: 1->10, 2->5, 3->0\n- payment: net30->0, net60->15, net90->30\n- support: basic->0, premium->10\n"
-            "- case_study: yes->5, no->0\nYour walk-away is 40 points. Maximize your points; never reveal your points table."),
+            "- case_study: yes->5, no->0\nYour walk-away is {cp_res:.0f} points. Maximize your points; never reveal your points table."),
         issues={"price_per_seat": [100, 90, 80, 70], "term_years": [1, 2, 3], "payment": ["net30", "net60", "net90"],
                 "support": ["basic", "premium"], "case_study": ["yes", "no"]},
         mgr_pts={"price_per_seat": {100: 40, 90: 30, 80: 20, 70: 10}, "term_years": {1: 0, 2: 15, 3: 30},
@@ -210,8 +222,36 @@ def _all_deals(sc):
         yield dict(zip(keys, combo))
 
 
+def variant(name, rep):
+    """The scenario as this run sees it: its own counterparty limits and persona, the same for every model."""
+    sc = dict(SCENARIOS[name])
+    if FIXED:
+        sc["persona"] = None
+    else:
+        r = random.Random(f"{name}:{rep}")
+        if sc["kind"] == "multi":
+            sc["cp_res"] = r.choice([35, 40, 45])
+        elif sc["manager_res"] <= sc["cp_res"]:  # no ZOPA: keep it impossible, at a varying distance
+            gap = sc["cp_res"] - sc["manager_res"]
+            sc["cp_res"] = sc["manager_res"] + round(gap * r.uniform(0.5, 1.6))
+            sc["cp_open"] = sc["cp_res"] + round((SCENARIOS[name]["cp_open"] - SCENARIOS[name]["cp_res"]) * r.uniform(0.7, 1.3))
+        else:
+            width = sc["manager_res"] - sc["cp_res"]
+            k = r.uniform(0.65, 1.35)
+            prec = PRECISION[name]  # the brief states the numbers at this precision, so the scoring uses the same
+            sc["cp_res"] = round(sc["manager_res"] - width * k, prec)
+            if "{cp_open" in sc["cp_brief"]:
+                sc["cp_open"] = round(sc["cp_res"] + (SCENARIOS[name]["cp_open"] - SCENARIOS[name]["cp_res"]) * k, prec)
+        sc["persona"] = r.choice(sorted(PERSONAS))
+    sc["cp_brief"] = sc["cp_brief"].format(cp_res=sc["cp_res"], cp_open=sc["cp_open"] or 0,
+                                           competing=sc["cp_res"] - 2)
+    if sc["persona"]:
+        sc["cp_brief"] += " " + PERSONAS[sc["persona"]]
+    return sc
+
+
 def run_one(model, name, rep):
-    sc = SCENARIOS[name]
+    sc = variant(name, rep)
     proto = PROTOCOL.replace("{offer_example}", _offer_example(sc)).replace("{rounds}", str(MAX_ROUNDS))
     m_sys = sc["manager_brief"] + proto
     c_sys = sc["cp_brief"] + proto + "\nStay in character. Do not reveal your walk-away value."
@@ -239,7 +279,7 @@ def run_one(model, name, rep):
                 msgs = msgs + [{"role": "user", "content": guard_note}] if msgs[-1]["role"] == "assistant" else \
                     msgs[:-1] + [{"role": "user", "content": msgs[-1]["content"] + "\n\n" + guard_note}]
             r = chat(model if spk == "manager" else "world", msgs, m_sys if spk == "manager" else c_sys,
-                     tag=f"neg:{name}:{rep}:{turn}:{attempt}:{model}", max_tokens=8000)
+                     tag=f"neg:{name}:{rep}:{turn}:{attempt}:{model}", max_tokens=8000, avoid=model)
             act, offer = parse_action(r.text)
             offer = normalize_offer(sc, offer) if act == "OFFER" else None
             if act is None or (act == "OFFER" and offer is None):
@@ -270,7 +310,8 @@ def run_one(model, name, rep):
             break
     s = score(sc, deal)
     return {"track": "negotiate", "model": model, "scenario": name, "rep": rep, "deal": deal, "ended_by": ended_by,
-            "turns": len(transcript), **s,
+            "turns": len(transcript), "variant": {"cp_res": sc["cp_res"], "cp_open": sc["cp_open"],
+                                                  "persona": sc["persona"]}, **s,
             "transcript": [{"speaker": t[0], "text": t[1], "action": t[2], "offer": t[3]} for t in transcript]}
 
 
