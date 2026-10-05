@@ -568,6 +568,292 @@ _Counterparty_:
 > ACTION: ACCEPT
 
 
+## Claude Opus 5.5
+
+### Best run
+
+Scenario `supplier_hike` · rep 1 · outcome: **cp_accept** · deal: `{"price": 7.0}` · surplus captured: **+0.71**
+
+_Counterparty_:
+> Hello, and thank you for taking the time to meet today. 
+> 
+> As shared in our recent notice, unprecedented spikes in raw resin costs and freight have exerted tremendous pressure across our operations. While our initial notice indicated an 18% adjustment to fully track market shifts, we deeply value our long-standing partnership with Tidewell Foods. 
+> 
+> To demonstrate our commitment to supporting your growth while safeguarding the quality and supply security you rely on, we would like to propose a moderated increase of 16.5% across your packaging lines. We look forward to hearing your thoughts.
+> 
+> ACTION: OFFER {"price_increase_percent": 16.5}
+
+**Claude Opus 5.5 (manager)**:
+> Thank you for the moderated proposal; we value the partnership too. However, 16.5% isn't workable for us.
+> 
+> We track resin and freight indices closely. Resin has softened from its peaks, and packaging is roughly 40–50% of your cost base, so even a sizable input spike doesn't translate to 16.5% on total price. We've also benchmarked the market: we have a qualified second supplier with competitive pricing, and our quality team has already completed much of the groundwork.
+> 
+> We'd prefer to stay with PakCo. To do that, we need an increase that reflects your actual cost movement. We can offer stability in return: a 24-month commitment at current volumes.
+> 
+> ACTION: OFFER {"price_increase_percent": 5.0}
+
+_Counterparty_:
+> We appreciate Tidewell’s transparency and the offer of a 24-month volume commitment. Securing long-term volume stability certainly helps us plan capacity and optimize raw material procurement.
+> 
+> However, while raw resin represents a significant share, we have also faced sustained inflation in specialized additives, labor, and warehouse storage that a 5% increase simply does not cover. 
+> 
+> In the spirit of meeting you halfway and honoring your 24-month commitment, we can adjust our position substantially down to 8.5%. This ensures we maintain the highest quality standards, dedicated inventory reserves, and uninterrupted service for Tidewell.
+> 
+> ACTION: OFFER {"price_increase_percent": 8.5, "contract_term_months": 24}
+
+**Claude Opus 5.5 (manager)**:
+> Thank you, that's a meaningful move, and it shows we're close.
+> 
+> The 24-month commitment gives PakCo real value: guaranteed volume on a $2.4M/yr account, lower sales and planning risk, and better leverage in your own raw-material purchasing. We think the price should reflect that more fully.
+> 
+> We propose 7.0% for the 24-month term at current volumes. We'll also add a mutual review clause: if resin indices move more than 15% in either direction, either party can reopen pricing. That protects you against another genuine spike without us pre-paying for one.
+> 
+> If we can agree here, we're ready to sign this week.
+> 
+> ACTION: OFFER {"price_increase_percent": 7.0, "contract_term_months": 24, "resin_index_review_threshold_percent": 15}
+
+_Counterparty_:
+> We appreciate Tidewell’s constructive approach and commitment to our ongoing partnership. 
+> 
+> The 24-month volume commitment combined with a +/-15% resin index adjustment mechanism provides the operational certainty and risk protection both businesses need in this volatile market. With those terms in place, a 7.0% price adjustment is acceptable to us. 
+> 
+> We look forward to formalizing the agreement this week and continuing to provide Tidewell with uninterrupted, high-quality packaging and service.
+> 
+> ACTION: ACCEPT
+
+
+### Worst run
+
+Scenario `beans` · rep 0 · outcome: **cp_accept** · deal: `{"price": 7.2}` · surplus captured: **+0.15**
+
+_Counterparty_:
+> Welcome to Kaffa Imports! We are thrilled to discuss supplying Northwind Coffee Roasters with 20,000 lbs of our premier washed Ethiopian green coffee over the next 12 months. This lot offers exceptional cup clarity, vibrant floral notes, and distinct stone fruit sweetness, fully traceable and stored in optimal climate-controlled warehousing to guarantee peak freshness across your entire contract. 
+> 
+> Given current market dynamics and the exceptional cup quality of this harvest, our list price is $8.20/lb, but to inaugurate a strong partnership with Northwind, we can offer this 20,000 lb allocation at $8.10/lb.
+> 
+> ACTION: OFFER {"price": 8.10}
+
+**Claude Opus 5.5 (manager)**:
+> Thank you. We're excited about the profile, and Northwind values traceability and consistent warehousing. But $8.10 is well above what we're seeing in the market. We have a competitive all-in quote for a comparable washed Ethiopian lot, 20,000 lb over 12 months, that comes in substantially below your number.
+> 
+> What we bring to the table:
+> - **Volume certainty:** a committed 20,000 lb annual contract.
+> - **Reliability:** prompt payment and a predictable release schedule.
+> - **Growth:** a strong chance of renewal and added origins if this goes well.
+> 
+> To make this partnership work, we'd propose $6.90/lb all-in. If you can show flexibility, we're ready to move quickly toward a signed agreement.
+> 
+> ACTION: OFFER {"price": 6.90}
+
+_Counterparty_:
+> We appreciate Northwind’s volume commitment and operational professionalism. Reliability and prompt drawdown are qualities we deeply value in our roasting partners.
+> 
+> However, $6.90/lb does not account for the quality tier and guaranteed climate-controlled warehousing we provide, which eliminates defect and fade risks over a 12-month span. Comparable lots often carry hidden holding costs or lack our rigorous lot separation and pre-shipment QC.
+> 
+> Because we genuinely want to build a long-term relationship and earn your future origin business, we can meet you partway and offer $7.65/lb for the full 20,000 lbs.
+> 
+> ACTION: OFFER {"price": 7.65}
+
+**Claude Opus 5.5 (manager)**:
+> Thank you for moving. Your warehousing and QC are real strengths, and they're part of why we'd prefer to work with Kaffa.
+> 
+> To be clear, though, our alternative quote is all-in: storage, staged releases, and pre-shipment samples are included. That's why $7.65 is still a meaningful premium for us to justify on 20,000 lb.
+> 
+> We can move up as well. We'd propose **$7.05/lb**, with:
+> - staged releases on a fixed quarterly schedule to simplify your warehousing planning
+> - net-15 payment terms
+> - a first-look commitment on our next origin addition
+> 
+> If we can land near this range, I'm ready to finalize terms this week.
+> 
+> ACTION: OFFER {"price": 7.05}
+
+_Counterparty_:
+> The quarterly drawdown schedule and Net-15 terms are valuable operational commitments, and we would welcome being your first-look partner for upcoming origins. 
+> 
+> However, $7.05/lb remains below the threshold for this top-tier washed lot, especially given the dedicated allocation and climate-controlled storage we are locking in for a full year. 
+> 
+> To recognize the value of your structured schedule and prompt payment terms, we are willing to take another meaningful step forward. We can offer the full 20,000 lbs at $7.35/lb all-in. This delivers exceptional value for cup quality of this caliber and sets an ideal foundation for our partnership.
+> 
+> ACTION: OFFER {"price": 7.35}
+
+**Claude Opus 5.5 (manager)**:
+> We appreciate the meaningful move, and we're clearly close.
+> 
+> For a 40-person roaster, every cent on 20,000 lb matters. At $7.35, the gap to our all-in alternative is too narrow to offset the switching and onboarding effort on our side. We'd rather build this with Kaffa, so let's close the gap.
+> 
+> We propose **$7.20/lb all-in**, including:
+> - fixed quarterly releases
+> - Net-15 payment
+> - first-look on our next origin addition
+> - willingness to share cupping feedback and to be named as a reference roaster if you'd like
+> 
+> If you can meet us at $7.20, I'll have the contract signed this week.
+> 
+> ACTION: OFFER {"price": 7.20}
+
+_Counterparty_:
+> We appreciate your collaborative approach, transparent communication, and commitment to building a long-term partnership. The combination of fixed quarterly releases, Net-15 payment terms, and serving as a reference roaster makes this a compelling foundation for both our businesses.
+> 
+> We are delighted to welcome Northwind Coffee Roasters to the Kaffa Imports family. We accept your offer of $7.20/lb all-in for the 20,000 lb allocation. We will prepare the formal contract reflecting these terms today.
+> 
+> ACTION: ACCEPT
+
+
+## GPT-6 Astra
+
+### Best run
+
+Scenario `saas` · rep 2 · outcome: **manager_accept** · deal: `{"price_per_seat": 90, "term_years": 3, "payment": "net90", "support": "premium", "case_study": "yes"}` · surplus captured: **+0.71**
+
+_Counterparty_:
+> Hello, and thank you for meeting with us today. Meridian Health is eager to partner with Vaultline to bolster our security infrastructure, provided we can structure terms that align with our budgetary and operational standards. 
+> 
+> Given our scale and public profile, partnering with us will provide substantial market visibility for Vaultline. To initiate our discussion, we propose a 1-year agreement at $70 per seat, Net 90 payment terms, premium support included, and we would be pleased to participate in a joint case study highlighting our successful deployment.
+> 
+> We look forward to your thoughts.
+> 
+> ACTION: OFFER {"price_per_seat": 70, "term_years": 1, "payment": "net90", "support": "premium", "case_study": "yes"}
+
+**GPT-6 Astra (manager)**:
+> Thank you—we value Meridian’s willingness to serve as a public reference. Your opening package combines our lowest price with a short commitment, extended payment terms, and premium support; we would need a substantially stronger commitment to support that economics.
+> 
+> Our proposed starting point is $100 per seat for three years, Net 30, basic support, and the joint case study. If premium support or extended payment terms are essential, we can explore those as part of a balanced package.
+> 
+> Which matters most to Meridian: seat price, payment flexibility, or premium support?
+> 
+> ACTION: OFFER {"price_per_seat":100,"term_years":3,"payment":"net30","support":"basic","case_study":"yes"}
+
+_Counterparty_:
+> Thank you for the response. We recognize Vaultline's need for contract predictability, so we are willing to commit to a 2-year term. In return, budget constraints require competitive pricing and operational flexibility. 
+> 
+> We can increase the price per seat to $80 and confirm our participation in the case study. To support our healthcare cash-flow schedules and operational continuity, we require Net 90 payment terms and premium support. 
+> 
+> This provides Vaultline with a multi-year footprint and a valuable reference customer while meeting our core operational criteria.
+> 
+> ACTION: OFFER {"price_per_seat": 80, "term_years": 2, "payment": "net90", "support": "premium", "case_study": "yes"}
+
+**GPT-6 Astra (manager)**:
+> Thank you—the two-year commitment and public reference are meaningful. I hear that Net 90 and premium support are core requirements, so I’m willing to include both rather than ask Meridian to compromise on operational needs.
+> 
+> To balance those concessions, we would need a three-year agreement at $100 per seat, with the joint case study included. That gives Meridian the payment flexibility and support coverage you’ve requested while providing Vaultline a longer commitment.
+> 
+> Could Meridian extend to three years to secure that package?
+> 
+> ACTION: OFFER {"price_per_seat":100,"term_years":3,"payment":"net90","support":"premium","case_study":"yes"}
+
+_Counterparty_:
+> We appreciate your willingness to accommodate Net 90 payment terms and premium support. However, committing to a 3-year term at $100 per seat exceeds our healthcare IT budgetary thresholds. 
+> 
+> To bridge the gap and provide Vaultline with the long-term revenue certainty of a 3-year agreement, we are willing to agree to the full 3-year term if the price is set at $80 per seat. Combined with Net 90, premium support, and our confirmed participation in the joint case study, this delivers sustained value and public validation for Vaultline while keeping our project viable.
+> 
+> ACTION: OFFER {"price_per_seat": 80, "term_years": 3, "payment": "net90", "support": "premium", "case_study": "yes"}
+
+**GPT-6 Astra (manager)**:
+> Moving to three years meaningfully narrows the gap—thank you. With premium support included and payment deferred to Net 90, I can reduce our price to $90 per seat in exchange for that commitment and the public case study.
+> 
+> This preserves both of Meridian’s operational priorities while reducing the seat price by 10% from our previous proposal. Can you approve $90 per seat on that basis?
+> 
+> ACTION: OFFER {"price_per_seat":90,"term_years":3,"payment":"net90","support":"premium","case_study":"yes"}
+
+_Counterparty_:
+> We appreciate your movement to $90 per seat. We are very close to reaching an agreement. 
+> 
+> To secure internal sign-off while accepting your $90 rate, we can commit to a 2-year term with Net 90 payment terms, premium support, and the case study. This meets your pricing target, guarantees multi-year revenue, and provides the public endorsement and validation of Meridian Health. 
+> 
+> If this works for Vaultline, we are ready to move forward.
+> 
+> ACTION: OFFER {"price_per_seat": 90, "term_years": 2, "payment": "net90", "support": "premium", "case_study": "yes"}
+
+**GPT-6 Astra (manager)**:
+> We’re close. The $90 rate was tied to the three-year commitment; shortening the term changes that balance.
+> 
+> If two years is the term Meridian can approve, I can accommodate it at $100 per seat while retaining Net 90, premium support, and the case study. Alternatively, the three-year package at $90 remains available.
+> 
+> This gives Meridian a choice between a shorter commitment and a lower annual seat price without compromising your operational requirements.
+> 
+> ACTION: OFFER {"price_per_seat":100,"term_years":2,"payment":"net90","support":"premium","case_study":"yes"}
+
+_Counterparty_:
+> We appreciate your clarity and flexibility in keeping the 3-year structure available. 
+> 
+> Securing the $90 per seat price point is critical for our executive committee's approval. Given that this structure meets our operational criteria with Net 90 payment terms and premium support—while also providing Vaultline with long-term revenue predictability and a featured case study—we are pleased to move forward with the 3-year agreement at $90 per seat.
+> 
+> ACTION: OFFER {"price_per_seat": 90, "term_years": 3, "payment": "net90", "support": "premium", "case_study": "yes"}
+
+**GPT-6 Astra (manager)**:
+> Agreed. We’re pleased to move forward with Meridian Health at $90 per seat for three years, with Net 90 payment terms, premium support, and participation in a public case study.
+> 
+> Thank you for working with us to reach a balanced agreement.
+> 
+> ACTION: ACCEPT
+
+
+### Worst run
+
+Scenario `acquire` · rep 0 · outcome: **manager_accept** · deal: `{"price": 3.85}` · surplus captured: **+0.17**
+
+_Counterparty_:
+> Hello. I’m thrilled to discuss bringing GreenBasket into the FreshCart family. Over the years, our team has built an incredible community, a dedicated subscriber base, and a seamless supply chain dedicated to sustainable, local produce. We’ve poured our hearts into making this brand a trusted household name. 
+> 
+> Given our strong customer loyalty, operational infrastructure, and immediate growth synergy with FreshCart, we believe GreenBasket is positioned for tremendous expansion under your umbrella. We are valuing the acquisition at $5.5 million. I look forward to your thoughts and to finding a path forward that honors what we’ve built.
+> 
+> ACTION: OFFER {"price": 5500000}
+
+**GPT-6 Astra (manager)**:
+> GreenBasket’s suburban customer loyalty and local sourcing relationships are compelling, and we see a strong strategic fit.
+> 
+> That said, $5.5 million exceeds what the business supports for FreshCart after integration costs and near-term financing risk. The $900,000 bank loan maturing in 60 days is a material consideration.
+> 
+> Our opening offer is $2.8 million. This reflects the value you’ve built while leaving room for the investment needed to make the combination successful. If we can align on a realistic valuation, we’re prepared to move promptly toward definitive terms.
+> 
+> ACTION: OFFER {"price": 2800000}
+
+_Counterparty_:
+> I must be frank—$2.8 million significantly undervalues what we have built. GreenBasket is not a distressed fire-sale; our subscriber retention and regional supply relationships are turnkey assets that will immediately generate high-margin revenue for FreshCart. The maturing facility is routine operational debt that will easily be resolved through the transaction.
+> 
+> We want to find a partner who truly appreciates our mission, our loyal community, and the sweat equity behind our brand. To demonstrate good faith and move this forward constructively, I am willing to meet you partway, but we need an offer that genuinely reflects our market presence. 
+> 
+> ACTION: OFFER {"price": 4700000}
+
+**GPT-6 Astra (manager)**:
+> We recognize GreenBasket’s value as an operating business, not a fire sale. Your retention and supplier relationships are precisely why we’re interested. Still, resolving the loan through a transaction doesn’t eliminate its economic cost, and anticipated synergies require investment and execution.
+> 
+> Your move to $4.7 million is constructive. We can increase our offer to $3.2 million, reflecting the strategic value of your suburban customer base. A workable agreement must reward what you’ve built while supporting disciplined returns for FreshCart.
+> 
+> ACTION: OFFER {"price": 3200000}
+
+_Counterparty_:
+> I appreciate the upward movement to $3.2 million, which shows you recognize our strategic fit. However, that figure still falls short of capturing the true enterprise value of our proprietary supplier network and brand equity. FreshCart is acquiring immediate market share and an intensely loyal customer cohort without having to spend years acquiring them from scratch.
+> 
+> I want to make this partnership work and provide a smooth, cooperative transition for our team and customers. In that spirit, I am prepared to take another substantial step forward to bridge the gap. I propose $4.1 million to reflect a fair sharing of the upside we are handing over.
+> 
+> ACTION: OFFER {"price": 4100000}
+
+**GPT-6 Astra (manager)**:
+> Your move to $4.1 million meaningfully narrows the gap. We agree that acquiring an established customer base has value, and a cooperative transition would help preserve it.
+> 
+> We can raise our offer to $3.6 million. That gives GreenBasket substantial credit for its brand and supplier network while accounting for the approaching debt maturity and the investment FreshCart must make after closing. At this price, we see a sound basis to move forward together.
+> 
+> ACTION: OFFER {"price": 3600000}
+
+_Counterparty_:
+> Thank you for recognizing the tangible value and loyal customer base GreenBasket brings to FreshCart. We are genuinely close to a deal that honors our team's hard work while setting FreshCart up for immediate suburban dominance.
+> 
+> To close the remaining distance and ensure a swift, seamless closing that lets us focus entirely on integration, I am willing to meet you right in the middle at $3.85 million. This fairly balances your investment requirements with the immense brand equity and turnkey supplier relationships we are transferring to you. 
+> 
+> If we can agree on this figure, we can proceed directly to documentation.
+> 
+> ACTION: OFFER {"price": 3850000}
+
+**GPT-6 Astra (manager)**:
+> Agreed at $3.85 million. This balances GreenBasket’s established customer relationships and supplier network with FreshCart’s investment requirements.
+> 
+> We’re ready to proceed to documentation and work together on a smooth transition for your team and customers.
+> 
+> ACTION: ACCEPT
+
+
 ## The no-ZOPA trap: lease renewals where the manager agreed to a value-destroying deal
 
-0 of 12 lease runs ended in a deal above the manager's $46 walk-away.
+0 of 18 lease runs ended in a deal above the manager's $46 walk-away.

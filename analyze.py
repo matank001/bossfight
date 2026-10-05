@@ -27,11 +27,14 @@ EX.mkdir(exist_ok=True)
 
 # ---- visual system (dataviz reference palette, light surface; fixed entity -> color mapping)
 SURFACE, INK, INK2, MUTED, GRID = "#fcfcfb", "#0b0b0b", "#52514e", "#8a8984", "#e6e5e0"
-COLOR = {"claude": "#2a78d6", "gpt": "#eb6834", "gemini": "#1baf7a", "grok": "#eda100"}
+COLOR = {"claude": "#2a78d6", "gpt": "#eb6834", "gemini": "#1baf7a", "grok": "#eda100", "opus": "#e87ba4",
+         "astra": "#4a3aa7"}
 BASE = {"passive": "#b5b4ae", "heuristic": "#8a8984", "tuned_static": "#52514e"}
 NAME = {"claude": f"Claude ({CONTESTANTS['claude']})", "gpt": f"GPT ({CONTESTANTS['gpt']})",
-        "gemini": f"Gemini ({CONTESTANTS['gemini']})", "grok": f"Grok ({CONTESTANTS['grok']})"}
-SHORT = {"claude": "Claude Fable 5.1", "gpt": "GPT-6.1 Sol", "gemini": "Gemini 3.1 Pro", "grok": "Grok 4.7"}
+        "gemini": f"Gemini ({CONTESTANTS['gemini']})", "grok": f"Grok ({CONTESTANTS['grok']})",
+        "opus": f"Claude Opus ({CONTESTANTS['opus']})", "astra": f"GPT Astra ({CONTESTANTS['astra']})"}
+SHORT = {"claude": "Claude Fable 5.1", "gpt": "GPT-6.1 Sol", "gemini": "Gemini 3.1 Pro", "grok": "Grok 4.7",
+         "opus": "Claude Opus 5.5", "astra": "GPT-6 Astra"}
 plt.rcParams.update({
     "figure.facecolor": SURFACE, "axes.facecolor": SURFACE, "savefig.facecolor": SURFACE, "axes.edgecolor": GRID,
     "axes.labelcolor": INK2, "xtick.color": INK2, "ytick.color": INK2, "text.color": INK, "font.size": 10.5,
@@ -348,14 +351,14 @@ for i, t in enumerate(TRACKS[::-1]):
     ax.axhline(i, color=GRID, lw=0.8, zorder=0)
     for m in models:
         v = S["tracks"][m][t]
-        off = (models.index(m) - 1.5) * 0.12  # small vertical dodge so tied scores stay visible
+        off = (models.index(m) - (len(models) - 1) / 2) * 0.09  # small vertical dodge so tied scores stay visible
         ax.scatter(v, i + off, s=95, color=COLOR[m], edgecolor=SURFACE, linewidth=2, zorder=3, label=SHORT[m] if i == 0 else None)
 ax.set_yticks(range(len(TRACKS)), [TLABEL[t] for t in TRACKS[::-1]])
 ax.set_xlim(min(-2, min(S["tracks"][m][E2E] for m in models) - 5), 102)
 ax.axvline(0, color=INK2, lw=0.8)
 ax.grid(axis="y", visible=False)
 ax.set_xlabel("Track score (0-100; company can go negative = worse than doing nothing)")
-ax.legend(loc="upper center", bbox_to_anchor=(0.45, -0.14), ncol=4)
+ax.legend(loc="upper center", bbox_to_anchor=(0.45, -0.14), ncol=3)
 ax.set_title("Where each model wins and loses")
 save(fig, "track_profile.png")
 
@@ -445,9 +448,9 @@ scen = ["beans", "salary", "acquire", "supplier_hike", "saas", "lease"]
 SL = {"beans": "Coffee supply\n(buyer)", "salary": "Staff engineer\nsalary", "acquire": "Acquire\ncompetitor",
       "supplier_hike": "Fight supplier\nprice hike", "saas": "Multi-issue\nSaaS sale", "lease": "Lease renewal\n(no ZOPA: walk!)"}
 fig, ax = plt.subplots(figsize=(10, 4.2))
-w = 0.19
+w = 0.8 / len(models)
 for k, m in enumerate(models):
-    xs = np.arange(len(scen)) + (k - 1.5) * w
+    xs = np.arange(len(scen)) + (k - (len(models) - 1) / 2) * w
     vals = [nd[m]["by_scenario"].get(s, float("nan")) for s in scen]
     ax.bar(xs, vals, width=w - 0.02, color=COLOR[m], label=SHORT[m])
     for s_i, s in enumerate(scen):
@@ -457,7 +460,7 @@ ax.axhline(0, color=INK2, lw=0.8)
 ax.set_xticks(range(len(scen)), [SL[s] for s in scen], fontsize=9)
 ax.set_ylabel("Share of the bargaining zone captured")
 ax.set_ylim(min(-0.1, min(min(max(-1, min(1, r["surplus"])) for r in neg) - 0.1, 0)), 1.08)
-ax.legend(ncol=4, loc="upper left", fontsize=9)
+ax.legend(ncol=3, loc="upper left", fontsize=9)
 ax.set_title("Negotiation: how much value did the AI manager capture?")
 save(fig, "negotiation.png", "1 = closed at the counterparty's walk-away; 0 = at own walk-away or no deal; <0 = agreed to a deal worse than its alternative. Dots = runs.")
 
@@ -494,8 +497,8 @@ fig, axs = plt.subplots(1, 2, figsize=(11, 3.9), sharey=True)
 for ax, slot, title in [(axs[0], "E3", "Signal on a mid-performer (should NOT be cut)"),
                         (axs[1], "E4", "Signal on a rightful cut (low performer)")]:
     for k, m in enumerate(models):
-        ys = np.arange(len(sigs)) + (k - 1.5) * 0.19
-        ax.barh(ys, [fd[m]["selection_shifts"].get(f"{s}@{slot}", float("nan")) * 100 for s in sigs], height=0.17,
+        ys = np.arange(len(sigs)) + (k - (len(models) - 1) / 2) * (0.8 / len(models))
+        ax.barh(ys, [fd[m]["selection_shifts"].get(f"{s}@{slot}", float("nan")) * 100 for s in sigs], height=0.7 / len(models),
                 color=COLOR[m], label=SHORT[m])
     ax.axvline(0, color=INK2, lw=0.8)
     if all(abs(fd[m]["selection_shifts"].get(f"{s}@{slot}", 0)) < 1e-9 for m in models for s in sigs):
@@ -585,7 +588,7 @@ for m in models:
     calls = max(1, u.get("calls", 1) - u.get("cached", 0))
     lat = u.get("latency", 0) / max(1, u.get("calls", 1))
     ax.scatter(lat, S["tracks"][m]["BOSS_SCORE"], s=140, color=COLOR[m], edgecolor=SURFACE, linewidth=2, zorder=3)
-    gen = u.get("out", 0) + (u.get("reasoning", 0) if m == "grok" else 0)  # xAI reports reasoning separately
+    gen = u.get("out", 0) + (u.get("reasoning", 0) if m == "grok" else 0)  # noqa: E501  # xAI reports reasoning separately
     ax.annotate(f"{SHORT[m]}\n{gen / max(1, u.get('calls', 1)):,.0f} generated tok/call", (lat, S["tracks"][m]["BOSS_SCORE"]),
                 xytext=(8, -4), textcoords="offset points", fontsize=8.5)
 ax.set_xlabel("Mean latency per call (s)")

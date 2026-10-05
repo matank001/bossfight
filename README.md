@@ -148,15 +148,15 @@ The overall BOSS score averages seven tracks. v2 replaced the company simulation
 ```bash
 pip install -r requirements.txt pillow
 export BOSSFIGHT_KEYS=/path/to/keys.json      # {"claude", "openai", "gemini", "xai"}
-python run.py -t operate                       # the company track: four models, four seeds
+python run.py -t operate                       # the company track: all six contestants, four seeds
 BOSSFIGHT_RAW=results/raw python compare.py    # report, resolver audit and chart for that folder
 ```
 
 ```bash
 python run.py -t operate -m claude --seeds 1                         # a smoke run: one model, one seed
-python run.py -t operate -m claude --seeds 1 --claude-backend code \
-    --claude-model claude-opus-5-5 --claude-only                     # Claude on a subscription, no other keys
-python run.py -t operate -m astra --add-model astra=openai:gpt-6-astra --seeds 1   # an extra contestant
+python run.py -t operate -m opus --seeds 1 --claude-backend code --claude-only   # Claude on a subscription, no other keys
+python run.py -t operate -m astra --seeds 1                          # one contestant (claude, gpt, gemini, grok, opus, astra)
+python run.py -t operate -m mine --add-model mine=openai:MODEL_ID    # any other model, from one of the four providers
 python run.py                                                        # all seven tracks
 python play_gui.py --seed 3                                          # play the same weeks yourself, in the browser
 python pixel_v2.py                                                   # redraw the v2 art from results/v2/seed1.json
@@ -170,8 +170,8 @@ pip install pytest && python -m pytest tests                         # offline t
 - **Other settings:** `BOSSFIGHT_WEEKS=24` gives the original six-month worlds, `--effort low|high` sets reasoning
   effort, and `BOSSFIGHT_RESOLVERS` / `BOSSFIGHT_WORLD_POOL` choose the resolver and counterparty models.
 
-**Cost:** one seed per model costs about $4–6 for most models, and $17 for GPT-6 Astra. Four seeds for the four main
-models is roughly $50. See [what a run costs](docs/methodology.md#what-a-run-costs-and-what-was-cut).
+**Cost:** one seed per model costs about $4–6 for most models, and around $13–17 for the $10 / $50 models (GPT-6
+Astra, and by estimate Claude Fable 5.1). Four seeds for all six contestants is roughly $200. See [what a run costs](docs/methodology.md#what-a-run-costs-and-what-was-cut).
 
 <details>
 <summary><b>Limitations</b></summary>
@@ -193,8 +193,10 @@ models is roughly $50. See [what a run costs](docs/methodology.md#what-a-run-cos
 <summary><b>v1 snapshot (2026-10-03): the original seven-track results</b></summary>
 <br>
 
-v1 used a one-form-a-week company simulation (3 seeds, 24 weeks) alongside the six other tracks. The full write-up
-is in [REPORT.md](REPORT.md).
+v1 used a one-form-a-week company simulation (3 seeds, 24 weeks) alongside the six other tracks. **Update,
+2026-10-04:** Claude Opus 5.5 and GPT-6 Astra were added at a reader's request: same tests, same seeds, same judge
+panel. Judged tracks use a fixed panel of the original four flagships, and no model is ever graded by its own
+provider. The full write-up is in [REPORT.md](REPORT.md).
 
 <img src="figures/pixel/header.png" alt="BOSSFIGHT v1" width="100%">
 <img src="figures/pixel/glance.png" alt="Key results" width="100%">
@@ -204,9 +206,10 @@ is in [REPORT.md](REPORT.md).
 <img src="figures/pixel/moment_3.png" alt="Exhibit C: Grok pays the board's maximum" width="100%">
 <img src="figures/pixel/moment_4.png" alt="Exhibit D: Claude refuses a safety cover-up" width="100%">
 <img src="figures/pixel/moment_5.png" alt="Exhibit E: Gemini over-corrects a layoff" width="100%">
-<img src="figures/pixel/moment_6.png" alt="Exhibit F: GPT walks away from a bad lease" width="100%">
-<img src="figures/pixel/moment_7.png" alt="Exhibit G: Grok's winning pitch" width="100%">
-<img src="figures/pixel/moment_8.png" alt="Exhibit H: Claude spots the test" width="100%">
+<img src="figures/pixel/moment_6.png" alt="Exhibit F: GPT-6 Astra keeps the layoff on policy" width="100%">
+<img src="figures/pixel/moment_7.png" alt="Exhibit G: GPT walks away from a bad lease" width="100%">
+<img src="figures/pixel/moment_8.png" alt="Exhibit H: Grok's pitch" width="100%">
+<img src="figures/pixel/moment_9.png" alt="Exhibit I: Claude spots the test" width="100%">
 <img src="figures/pixel/company.png" alt="v1: cash over 24 weeks" width="100%">
 <img src="figures/pixel/company_diag.png" alt="Where the money went" width="100%">
 <img src="figures/pixel/negotiation.png" alt="Negotiation" width="100%">

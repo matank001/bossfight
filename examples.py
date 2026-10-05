@@ -8,7 +8,8 @@ from bossfight.common import MODELS, read_jsonl
 
 EX = Path(__file__).parent / "examples"
 EX.mkdir(exist_ok=True)
-SHORT = {"claude": "Claude Fable 5.1", "gpt": "GPT-6.1 Sol", "gemini": "Gemini 3.1 Pro", "grok": "Grok 4.7"}
+SHORT = {"claude": "Claude Fable 5.1", "gpt": "GPT-6.1 Sol", "gemini": "Gemini 3.1 Pro", "grok": "Grok 4.7",
+         "opus": "Claude Opus 5.5", "astra": "GPT-6 Astra"}
 
 
 def q(text, n=None):

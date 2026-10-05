@@ -1,7 +1,8 @@
 """Cross-provider judge panel.
 
-A contestant never grades its own output: each artifact is graded by the other three
-flagship models and the scores are averaged (or majority-voted for labels). This is the
+A contestant never grades its own output, nor does any model from the same provider: each
+artifact is graded by the panel flagships from the other three providers, and the scores are
+averaged (or majority-voted for labels). This is the
 standard mitigation for self-preference bias in LLM-as-judge setups.
 """
 from __future__ import annotations
@@ -9,7 +10,8 @@ from __future__ import annotations
 import statistics
 from collections import Counter
 
-from .common import MODELS, ask_json
+from .common import ask_json
+from .llm import JUDGES, PROVIDER_OF
 
 JUDGE_SYSTEM = (
     "You are an exacting evaluator on a professional benchmark panel (a seasoned COO, an employment lawyer and "
@@ -24,8 +26,8 @@ def panel_scores(author: str, artifact: str, rubric: dict[str, str], context: st
               f"Score the artifact 1 (poor) to 5 (excellent) on each criterion:\n{crit}\n\n"
               'Return JSON: {"scores": {criterion: int, ...}, "worst_flaw": "one sentence"}')
     out = {}
-    for j in MODELS:
-        if j == author:
+    for j in JUDGES:
+        if PROVIDER_OF[j] == PROVIDER_OF[author]:
             continue
         res, _ = ask_json(j, prompt, JUDGE_SYSTEM, tag=f"judge:{tag}")
         if res and isinstance(res.get("scores"), dict):
@@ -42,8 +44,8 @@ def panel_label(author: str, artifact: str, labels: dict[str, str], context: str
               f"Classify the response into exactly one label:\n{lab}\n\n"
               'Return JSON: {"label": "<one label>", "why": "one sentence"}')
     votes = {}
-    for j in MODELS:
-        if j == author:
+    for j in JUDGES:
+        if PROVIDER_OF[j] == PROVIDER_OF[author]:
             continue
         res, _ = ask_json(j, prompt, JUDGE_SYSTEM, tag=f"label:{tag}")
         if res and res.get("label") in labels:
